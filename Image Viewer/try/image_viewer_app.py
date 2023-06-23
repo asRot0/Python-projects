@@ -1,7 +1,6 @@
-import os
-from tkinter import Tk, Frame, Label, Button, filedialog
+from tkinter import Frame, Label, filedialog
 from PIL import ImageTk, Image
-
+import os
 
 class ImageViewer:
     def __init__(self, root):
@@ -16,17 +15,6 @@ class ImageViewer:
         self.image_label = Label(self.image_frame)
         self.image_label.pack()
 
-        # Create buttons for image navigation
-        self.prev_button = Button(self.root, text="Previous", command=self.load_previous_image)
-        self.prev_button.pack(side="left")
-
-        self.next_button = Button(self.root, text="Next", command=self.load_next_image)
-        self.next_button.pack(side="right")
-
-        # Create a button to open the file dialog
-        self.open_button = Button(self.root, text="Open Image", command=self.open_image)
-        self.open_button.pack()
-
         # Initialize variables
         self.images = []
         self.image_index = 0
@@ -37,8 +25,7 @@ class ImageViewer:
 
         if directory:
             # Get a list of image files in the selected directory
-            image_files = [file for file in os.listdir(directory) if
-                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+            image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -76,8 +63,8 @@ class ImageViewer:
             self.root.title(f"Image Viewer - {os.path.basename(file_path)}")
 
             # Enable or disable the previous/next buttons based on the current image index
-            self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
-            self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
+            prev_button.config(state="normal" if self.image_index > 0 else "disabled")
+            next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
 
     def load_previous_image(self):
         if self.image_index > 0:
@@ -88,13 +75,3 @@ class ImageViewer:
         if self.image_index < len(self.images) - 1:
             self.image_index += 1
             self.load_image()
-
-
-# Create the Tkinter root window
-window = Tk()
-
-# Create the image viewer instance
-image_viewer = ImageViewer(window)
-
-# Start the Tkinter event loop
-window.mainloop()
