@@ -7,9 +7,15 @@ class ImageViewer:
         self.root = root
         self.root.title("Image Viewer")
 
+        # Create a frame to hold the next and previous button
+        self.image_button_frame = Frame(self.root, bg='red')
+        #self.image_button_frame.pack(side='top', padx=10, pady=10)
+        self.image_button_frame.grid(row=0, column=0, sticky='w', pady=2)
+
         # Create a frame to hold the image display
         self.image_frame = Frame(self.root, bg="lightgray")
-        self.image_frame.pack(side="left", padx=10, pady=10)
+        #self.image_frame.pack(side="left", padx=10, pady=10)
+        self.image_frame.grid(row=1, column=0, sticky='s')
 
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
@@ -17,22 +23,23 @@ class ImageViewer:
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg="lightblue")
-        self.edit_frame.pack(side="right", padx=10, pady=10)
+        #self.edit_frame.pack(side="right", padx=10, pady=10)
+        self.edit_frame.grid(row=0, column=1, sticky='w', pady=2)
 
         # Create buttons for image navigation
-        self.prev_button = Button(self.image_frame, text="Previous", command=self.load_previous_image)
+        self.prev_button = Button(self.image_button_frame, text="Previous", command=self.load_previous_image)
         self.prev_button.pack(side="left", padx=5, pady=5)
 
-        self.next_button = Button(self.image_frame, text="Next", command=self.load_next_image)
+        self.next_button = Button(self.image_button_frame, text="Next", command=self.load_next_image)
         self.next_button.pack(side="right", padx=5, pady=5)
 
         # Create a button to open the file dialog
         self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image)
-        self.open_button.pack(padx=5, pady=5)
+        self.open_button.pack(side='right', padx=5, pady=5, expand=True)
 
         # Create a button to delete the current image
         self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
-        self.delete_button.pack(padx=5, pady=5)
+        self.delete_button.pack(side='right', padx=5, pady=5, expand=True)
 
         # Initialize variables
         self.images = []
@@ -63,7 +70,7 @@ class ImageViewer:
                     new_width = int(root_width * 0.8)
                     new_height = int(root_height * 0.8)
 
-                    image.thumbnail((new_width, new_height))  # Resize the image for display
+                    image.thumbnail((new_width, new_height), Image.LANCZOS)  # Resize the image for display
 
                     # Convert the PIL image to Tkinter PhotoImage
                     image_tk = ImageTk.PhotoImage(image)
