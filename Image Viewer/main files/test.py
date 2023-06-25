@@ -1,31 +1,38 @@
 import os
 from tkinter import Tk, Frame, Label, Button, filedialog
 from PIL import ImageTk, Image
-import cv2
-
 
 class ImageViewer:
     def __init__(self, root):
         self.root = root
+        self.root.title("Image Viewer")
 
-        # Create a frame to hold the image
-        self.image_frame = Frame(self.root)
-        self.image_frame.pack()
+        # Create a frame to hold the image display
+        self.image_frame = Frame(self.root, bg="lightgray")
+        self.image_frame.pack(side="left", padx=10, pady=10)
 
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
         self.image_label.pack()
 
-        # Create buttons for image navigation
-        self.prev_button = Button(self.root, text="Previous", command=self.load_previous_image)
-        self.prev_button.pack(side="left")
+        # Create a frame for the editing section
+        self.edit_frame = Frame(self.root, bg="lightblue")
+        self.edit_frame.pack(side="right", padx=10, pady=10)
 
-        self.next_button = Button(self.root, text="Next", command=self.load_next_image)
-        self.next_button.pack(side="right")
+        # Create buttons for image navigation
+        self.prev_button = Button(self.image_frame, text="Previous", command=self.load_previous_image)
+        self.prev_button.pack(side="left", padx=5, pady=5)
+
+        self.next_button = Button(self.image_frame, text="Next", command=self.load_next_image)
+        self.next_button.pack(side="right", padx=5, pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.root, text="Open Image", command=self.open_image)
-        self.open_button.pack()
+        self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image)
+        self.open_button.pack(padx=5, pady=5)
+
+        # Create a button to delete the current image
+        self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
+        self.delete_button.pack(padx=5, pady=5)
 
         # Initialize variables
         self.images = []
@@ -37,8 +44,7 @@ class ImageViewer:
 
         if directory:
             # Get a list of image files in the selected directory
-            image_files = [file for file in os.listdir(directory) if
-                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+            image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -52,23 +58,22 @@ class ImageViewer:
 
                     # Load the image using PIL
                     image = Image.open(file_path)
-                    image.thumbnail((500, 500))  # Resize the image for display
-                    # convert to 80 percent of root geometry
+                    root_width = self.root.winfo_width()
+                    root_height = self.root.winfo_height()
+                    new_width = int(root_width * 0.8)
+                    new_height = int(root_height * 0.8)
+
+                    image.thumbnail((new_width, new_height))  # Resize the image for display
 
                     # Convert the PIL image to Tkinter PhotoImage
                     image_tk = ImageTk.PhotoImage(image)
-
-
-
-                    # if cv2 doesn't to convert image into tkinter image then use pillow
-                    # fro editing options using opencv image processing
 
                     # Store the file path and PhotoImage in the list
                     self.images.append((file_path, image_tk))
 
                 # Display the first image
                 self.load_image()
-        cv2.destroyAllWindows()
+
     def load_image(self):
         if self.images:
             # Get the current image file and Tkinter PhotoImage
@@ -95,16 +100,37 @@ class ImageViewer:
             self.image_index += 1
             self.load_image()
 
+    def delete_image(self):
+        if self.images:
+            # Remove the current image from the list
+            del self.images[self.image_index]
+
+            if self.images:
+                # If there are remaining images, update the image display
+                if self.image_index >= len(self.images):
+                    self.image_index = len(self.images) - 1
+                self.load_image()
+            else:
+                # If there are no remaining images, clear the image display
+                self.clear_image()
+
+    def clear_image(self):
+        # Clear the image label
+        self.image_label.configure(image=None)
+        self.image_label.image = None
+
+        # Update the window title
+        self.root.title("Image Viewer")
+
+        # Disable the previous/next buttons
+        self.prev_button.config(state="disabled")
+        self.next_button.config(state="disabled")
 
 # Create the Tkinter root window
-window = Tk()
-
-window.title('Image Viewer')
-window.geometry('1100x600')
-
+root = Tk()
 
 # Create the image viewer instance
-image_viewer = ImageViewer(window)
+image_viewer = ImageViewer(root)
 
 # Start the Tkinter event loop
-window.mainloop()
+root.mainloop()

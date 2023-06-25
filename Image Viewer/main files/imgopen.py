@@ -7,66 +7,88 @@ class ImageViewer:
         self.root = root
         self.root.title("Image Viewer")
 
-        # Create a frame to hold the image
-        self.image_frame = Frame(self.root)
-        self.image_frame.pack()
+        # Create a frame to hold the image display
+        self.image_frame = Frame(self.root, bg="lightgray")
+        self.image_frame.pack(side="left", padx=10, pady=10)
 
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
         self.image_label.pack()
 
-        # Create buttons for image navigation
-        self.prev_button = Button(self.root, text="Previous", command=self.load_previous_image)
-        self.prev_button.pack(side="left")
+        # Create a frame for the editing section
+        self.edit_frame = Frame(self.root, bg="lightblue")
+        self.edit_frame.pack(side="right", padx=10, pady=10)
 
-        self.next_button = Button(self.root, text="Next", command=self.load_next_image)
-        self.next_button.pack(side="right")
+        # Create buttons for image navigation
+        self.prev_button = Button(self.image_frame, text="Previous", command=self.load_previous_image)
+        self.prev_button.pack(side="left", padx=5, pady=5)
+
+        self.next_button = Button(self.image_frame, text="Next", command=self.load_next_image)
+        self.next_button.pack(side="right", padx=5, pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.root, text="Open Image", command=self.open_image)
-        self.open_button.pack()
+        self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image)
+        self.open_button.pack(padx=5, pady=5)
 
         # Create a button to delete the current image
-        self.delete_button = Button(self.root, text="Delete Image", command=self.delete_image)
-        self.delete_button.pack()
+        self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
+        self.delete_button.pack(padx=5, pady=5)
 
         # Initialize variables
-        self.image_index = 0
         self.images = []
+        self.image_index = 0
 
     def open_image(self):
-        # Open a file dialog to select the image
-        filetypes = (("Image Files", "*.jpg;*.jpeg;*.png;*.gif"), ("All Files", "*.*"))
-        image_file = filedialog.askopenfilename(filetypes=filetypes)
+        # Open a file dialog to select a directory
+        directory = filedialog.askdirectory()
 
-        if image_file:
-            # Load the image using PIL
-            image = Image.open(image_file)
-            image.thumbnail((800, 800))  # Resize the image for display
+        if directory:
+            # Get a list of image files in the selected directory
+            image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
-            # Convert the PIL image to Tkinter PhotoImage
-            image_tk = ImageTk.PhotoImage(image)
+            if image_files:
+                # Sort the image files alphabetically
+                image_files.sort()
 
-            # Store the image file and PhotoImage in the list
-            self.images.append((image_file, image_tk))
+                # Load and store the images
+                self.images = []
+                for file in image_files:
+                    # Construct the full file path
+                    file_path = os.path.join(directory, file)
 
-            # Display the loaded image
-            self.load_image()
+                    # Load the image using PIL
+                    image = Image.open(file_path)
+                    root_width = self.root.winfo_width()
+                    root_height = self.root.winfo_height()
+                    new_width = int(root_width * 0.8)
+                    new_height = int(root_height * 0.8)
+
+                    image.thumbnail((new_width, new_height))  # Resize the image for display
+
+                    # Convert the PIL image to Tkinter PhotoImage
+                    image_tk = ImageTk.PhotoImage(image)
+
+                    # Store the file path and PhotoImage in the list
+                    self.images.append((file_path, image_tk))
+
+                # Display the first image
+                self.load_image()
 
     def load_image(self):
-        # Get the current image file and Tkinter PhotoImage
-        image_file, image_tk = self.images[self.image_index]
+        if self.images:
+            # Get the current image file and Tkinter PhotoImage
+            file_path, image_tk = self.images[self.image_index]
 
-        # Update the image label
-        self.image_label.configure(image=image_tk)
-        self.image_label.image = image_tk
+            # Update the image label
+            self.image_label.configure(image=image_tk)
+            self.image_label.image = image_tk
 
-        # Update the window title with the image file name
-        self.root.title(f"Image Viewer - {os.path.basename(image_file)}")
+            # Update the window title with the image file name
+            self.root.title(f"Image Viewer - {os.path.basename(file_path)}")
 
-        # Enable or disable the previous/next buttons based on the current image index
-        self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
-        self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
+            # Enable or disable the previous/next buttons based on the current image index
+            self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
+            self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
 
     def load_previous_image(self):
         if self.image_index > 0:
@@ -83,19 +105,19 @@ class ImageViewer:
             # Remove the current image from the list
             del self.images[self.image_index]
 
-            # Adjust the image index if necessary
-            if self.image_index >= len(self.images):
-                self.image_index = len(self.images) - 1
-
-            # Load the new current image or clear the display if no images left
             if self.images:
+                # If there are remaining images, update the image display
+                if self.image_index >= len(self.images):
+                    self.image_index = len(self.images) - 1
                 self.load_image()
             else:
+                # If there are no remaining images, clear the image display
                 self.clear_image()
 
     def clear_image(self):
         # Clear the image label
         self.image_label.configure(image=None)
+        self.image_label.image = None
 
         # Update the window title
         self.root.title("Image Viewer")
