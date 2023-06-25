@@ -1,11 +1,12 @@
-from tkinter import Frame, Label, filedialog
-from PIL import ImageTk, Image
 import os
+from tkinter import Tk, Frame, Label, Button, filedialog
+from PIL import ImageTk, Image
+import cv2
+
 
 class ImageViewer:
     def __init__(self, root):
         self.root = root
-        self.root.title("Image Viewer")
 
         # Create a frame to hold the image
         self.image_frame = Frame(self.root)
@@ -14,6 +15,17 @@ class ImageViewer:
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
         self.image_label.pack()
+
+        # Create buttons for image navigation
+        self.prev_button = Button(self.root, text="Previous", command=self.load_previous_image)
+        self.prev_button.pack(side="left")
+
+        self.next_button = Button(self.root, text="Next", command=self.load_next_image)
+        self.next_button.pack(side="right")
+
+        # Create a button to open the file dialog
+        self.open_button = Button(self.root, text="Open Image", command=self.open_image)
+        self.open_button.pack()
 
         # Initialize variables
         self.images = []
@@ -25,7 +37,8 @@ class ImageViewer:
 
         if directory:
             # Get a list of image files in the selected directory
-            image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+            image_files = [file for file in os.listdir(directory) if
+                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -39,17 +52,23 @@ class ImageViewer:
 
                     # Load the image using PIL
                     image = Image.open(file_path)
-                    image.thumbnail((800, 800))  # Resize the image for display
+                    image.thumbnail((500, 500))  # Resize the image for display
+                    # convert to 80 percent of root geometry
 
                     # Convert the PIL image to Tkinter PhotoImage
                     image_tk = ImageTk.PhotoImage(image)
+
+
+
+                    # if cv2 doesn't to convert image into tkinter image then use pillow
+                    # fro editing options using opencv image processing
 
                     # Store the file path and PhotoImage in the list
                     self.images.append((file_path, image_tk))
 
                 # Display the first image
                 self.load_image()
-
+        cv2.destroyAllWindows()
     def load_image(self):
         if self.images:
             # Get the current image file and Tkinter PhotoImage
@@ -63,8 +82,8 @@ class ImageViewer:
             self.root.title(f"Image Viewer - {os.path.basename(file_path)}")
 
             # Enable or disable the previous/next buttons based on the current image index
-            prev_button.config(state="normal" if self.image_index > 0 else "disabled")
-            next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
+            self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
+            self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
 
     def load_previous_image(self):
         if self.image_index > 0:
@@ -75,3 +94,17 @@ class ImageViewer:
         if self.image_index < len(self.images) - 1:
             self.image_index += 1
             self.load_image()
+
+
+# Create the Tkinter root window
+window = Tk()
+
+window.title('Image Viewer')
+window.geometry('1100x600')
+
+
+# Create the image viewer instance
+image_viewer = ImageViewer(window)
+
+# Start the Tkinter event loop
+window.mainloop()
