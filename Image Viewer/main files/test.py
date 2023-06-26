@@ -13,16 +13,16 @@ class ImageViewer:
         self.image_button_frame.grid(row=0, column=0, sticky='w', pady=2)
 
         # Create a frame to hold the image display
-        self.image_frame = Frame(self.root, bg="lightgray")
+        self.image_frame = Frame(self.root, bg="lightgray",width=100, height=50)
         #self.image_frame.pack(side="left", padx=10, pady=10)
         self.image_frame.grid(row=1, column=0, sticky='s')
 
         # Create a label to display the image
-        self.image_label = Label(self.image_frame,width=100, height=100)
+        self.image_label = Label(self.image_frame)
         self.image_label.pack(side='left')
 
         # Create a frame for the editing section
-        self.edit_frame = Frame(self.root, bg="lightblue")
+        self.edit_frame = Frame(self.root, bg="lightblue", width=100, height=50)
         #self.edit_frame.pack(side="right", padx=10, pady=10)
         self.edit_frame.grid(row=0, column=1, sticky='w', pady=2)
 
@@ -135,7 +135,7 @@ class ImageViewer:
 
 # Create the Tkinter root window
 root = Tk()
-
+#root.geometry('700x500')
 # Create the image viewer instance
 image_viewer = ImageViewer(root)
 
