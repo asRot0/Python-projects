@@ -18,8 +18,8 @@ class ImageViewer:
         self.image_frame.grid(row=1, column=0, sticky='s')
 
         # Create a label to display the image
-        self.image_label = Label(self.image_frame)
-        self.image_label.pack()
+        self.image_label = Label(self.image_frame,width=100, height=100)
+        self.image_label.pack(side='left')
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg="lightblue")
