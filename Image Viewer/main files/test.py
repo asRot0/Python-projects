@@ -135,7 +135,16 @@ class ImageViewer:
 
 # Create the Tkinter root window
 root = Tk()
-#root.geometry('700x500')
+
+# Set the window size
+root.geometry('700x500')
+
+# Configure grid row and column weights
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
 # Create the image viewer instance
 image_viewer = ImageViewer(root)
 
