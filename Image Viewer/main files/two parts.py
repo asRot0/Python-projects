@@ -40,3 +40,35 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# from tkinter import Tk, Frame
+#
+# def main():
+#     # Create the Tkinter root window
+#     root = Tk()
+#
+#     # Set the window title
+#     root.title("Split Window")
+#
+#     # Set the window size
+#     root.geometry("500x300")
+#
+#     # Create a frame for the left part
+#     left_frame = Frame(root, width=250, height=300, bg="lightblue")
+#     left_frame.grid(row=0, column=0, sticky="nsew")
+#
+#     # Create a frame for the right part
+#     right_frame = Frame(root, width=250, height=300, bg="lightgreen")
+#     right_frame.grid(row=0, column=1, sticky="nsew")
+#
+#     # Configure the grid weights
+#     root.grid_rowconfigure(0, weight=1)
+#     root.grid_columnconfigure(0, weight=1)
+#     root.grid_columnconfigure(1, weight=1)
+#
+#     # Run the Tkinter event loop
+#     root.mainloop()
+#
+# if __name__ == "__main__":
+#     main()
