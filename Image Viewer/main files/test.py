@@ -41,7 +41,7 @@ class ImageViewer:
 
         # Create a button to delete the current image
         self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
-        self.delete_button.pack(side='left', padx=5, pady=5)
+        self.delete_button.pack(side='left', padx=5, pady=50)
 
         # Initialize variables
         self.images = []
