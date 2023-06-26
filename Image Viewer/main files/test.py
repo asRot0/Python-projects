@@ -2,6 +2,7 @@ import os
 from tkinter import Tk, Frame, Label, Button, filedialog
 from PIL import ImageTk, Image
 
+
 class ImageViewer:
     def __init__(self, root):
         self.root = root
@@ -13,7 +14,7 @@ class ImageViewer:
 
         # Create a frame to hold the image display
         self.image_frame = Frame(self.root, bg="lightgray")
-        self.image_frame.grid(row=1, column=0, sticky='s')
+        self.image_frame.grid(row=1, column=0, sticky='w')
 
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
@@ -21,7 +22,7 @@ class ImageViewer:
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg="lightblue")
-        self.edit_frame.grid(row=0, column=1, sticky='w', pady=2)
+        self.edit_frame.grid(row=0, column=1, sticky='n', pady=2)
 
         # Create buttons for image navigation
         self.prev_button = Button(self.image_button_frame, text="Previous", command=self.load_previous_image, width=50)
@@ -48,7 +49,8 @@ class ImageViewer:
 
         if directory:
             # Get a list of image files in the selected directory
-            image_files = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+            image_files = [file for file in os.listdir(directory) if
+                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -129,6 +131,7 @@ class ImageViewer:
         # Disable the previous/next buttons
         self.prev_button.config(state="disabled")
         self.next_button.config(state="disabled")
+
 
 # Create the Tkinter root window
 root = Tk()
