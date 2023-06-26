@@ -1,16 +1,16 @@
 from tkinter import Tk, Frame, Label
 
 def create_widgets(root):
-    # Create a frame for the left part
-    left_frame = Frame(root, width=200, height=200)
+    # Create a frame for the left part with background color
+    left_frame = Frame(root, width=200, height=200, bg="red")
     left_frame.pack(side="left", padx=10, pady=10)
 
     # Create a label in the left frame
     left_label = Label(left_frame, text="Left Part")
     left_label.pack(anchor="w")
 
-    # Create a frame for the right part
-    right_frame = Frame(root, width=200, height=200)
+    # Create a frame for the right part with background color
+    right_frame = Frame(root, width=200, height=200, bg="lightgreen")
     right_frame.pack(side="right", padx=10, pady=10)
 
     # Create a label in the right frame
