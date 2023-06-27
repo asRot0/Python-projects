@@ -10,11 +10,11 @@ class ImageViewer:
 
         # Create a frame to hold the next and previous button
         self.image_button_frame = Frame(self.root, bg='red')
-        self.image_button_frame.grid(row=0, column=0, sticky='nsew', pady=1)
+        self.image_button_frame.grid(row=0, column=0, sticky='w', pady=1)
 
         # Create a frame to hold the image display
         self.image_frame = Frame(self.root, bg="lightgray")
-        self.image_frame.grid(row=1, column=0, sticky='nsew')
+        self.image_frame.grid(row=1, column=0, sticky='w')
 
         # Create a label to display the image
         self.image_label = Label(self.image_frame)
@@ -22,7 +22,7 @@ class ImageViewer:
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg="lightblue")
-        self.edit_frame.grid(row=2, column=1, sticky='nsew')
+        self.edit_frame.grid(row=0, column=1, sticky='e')
 
         # Create buttons for image navigation
         self.prev_button = Button(self.image_button_frame, text="Previous", command=self.load_previous_image, width=40)
@@ -31,17 +31,13 @@ class ImageViewer:
         self.next_button = Button(self.image_button_frame, text="Next", command=self.load_next_image, width=40)
         self.next_button.pack(side="right", padx=5, pady=5)
 
-        # Create a label for gap
-        self.gap_label = Label(self.edit_frame, bg="lightblue")
-        self.gap_label.pack(side='top')
-
         # Create a button to open the file dialog
         self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image)
-        self.open_button.pack(side='left', padx=5, pady=5)
+        self.open_button.pack(side='right', padx=5, pady=5)
 
         # Create a button to delete the current image
         self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
-        self.delete_button.pack(side='left', padx=5, pady=5)
+        self.delete_button.pack(side='right', padx=5, pady=5)
 
         # Initialize variables
         self.images = []
@@ -142,13 +138,12 @@ root = Tk()
 
 # Set the window size
 root.geometry('1000x500')
-#root.resizable(False, False)
+root.resizable(False, False)
 
 # Configure grid row and column weights
 root.grid_rowconfigure(0, weight=0)
 root.grid_rowconfigure(1, weight=0)
-root.grid_rowconfigure(2, weight=1)
-root.grid_columnconfigure(0, weight=0)
+root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
 
 # Create the image viewer instance
