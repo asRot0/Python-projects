@@ -1,6 +1,7 @@
 import os
-from tkinter import Tk, Frame, Label, Button, filedialog
+from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel
 from PIL import ImageTk, Image
+import cv2
 
 
 class ImageViewer:
@@ -38,7 +39,8 @@ class ImageViewer:
         self.next_button.pack(side="right", padx=5, pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image, bg='#BDBFBF')
+        self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image,
+                                  bg='#BDBFBF')
         self.open_button.pack(side='right', padx=5, pady=5)
 
         # Create a button to delete the current image
@@ -154,7 +156,40 @@ class ImageViewer:
         self.next_button.config(state="disabled")
 
     def edit_image(self):
-        pass
+        if self.images:
+            # Get the current image file path
+            file_path, image_tk = self.images[self.image_index]
+
+            # Create a new Toplevel window for editing
+            edit_window = Toplevel(self.root)
+            edit_window.title("Image Editor")
+            edit_window.geometry('300x300')
+
+            #edit_window.resizable(False, False)
+
+
+            # Create a button to apply the edits and update the main window image
+            apply_button = Button(edit_window, text="Apply", command=lambda: self.apply_edits(file_path))
+            apply_button.pack(padx=5, pady=5)
+
+            # Close the edit window when the main window is closed
+            edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
+
+    def apply_edits(self, file_path):
+        # Reload the edited image using PIL
+        edited_image = Image.open(file_path)
+        edited_img = cv2.cvtColor(edited_image, cv2.COLOR_BGR2GRAY)
+        cv2.imshow('edit', edited_img)
+
+        # Convert the edited image to Tkinter PhotoImage
+        edited_image_tk = ImageTk.PhotoImage(edited_image)
+
+        # Update the image label in the main window
+        self.image_label.configure(image=edited_image_tk)
+        self.image_label.image = edited_image_tk
+
+        # Update the image in the images list
+        self.images[self.image_index] = (file_path, edited_image_tk)
 
     def save_image(self):
         if self.images:
