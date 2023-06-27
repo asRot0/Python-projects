@@ -22,7 +22,11 @@ class ImageViewer:
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg="lightblue")
-        self.edit_frame.grid(row=0, column=1, sticky='e')
+        self.edit_frame.grid(row=0, column=1, rowspan=1, sticky='e')
+
+        # Create a frame2 for the editing section
+        self.edit_frame2 = Frame(self.root, bg="lightblue")
+        self.edit_frame2.grid(row=1, column=1, rowspan=1, sticky='en')
 
         # Create buttons for image navigation
         self.prev_button = Button(self.image_button_frame, text="Previous", command=self.load_previous_image, width=40)
@@ -38,6 +42,10 @@ class ImageViewer:
         # Create a button to delete the current image
         self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
         self.delete_button.pack(side='right', padx=5, pady=5)
+
+        self.edit_button = Button(self.edit_frame2, text="Edit", command=self.edit_image, width=8)
+        self.edit_button.pack(side='top', padx=5, pady=5)
+        self.edit_button.config(state='disabled')
 
         # Initialize variables
         self.images = []
@@ -95,6 +103,7 @@ class ImageViewer:
             # Enable or disable the previous/next buttons based on the current image index
             self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
             self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
+            self.edit_button.config(state="normal")
 
     def load_previous_image(self):
         if self.image_index > 0:
@@ -132,6 +141,9 @@ class ImageViewer:
         self.prev_button.config(state="disabled")
         self.next_button.config(state="disabled")
 
+    def edit_image(self):
+        if self.images:
+            print('hello')
 
 # Create the Tkinter root window
 root = Tk()
