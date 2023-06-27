@@ -43,9 +43,13 @@ class ImageViewer:
         self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image)
         self.delete_button.pack(side='right', padx=5, pady=5)
 
-        self.edit_button = Button(self.edit_frame2, text="Edit", command=self.edit_image, width=8)
+        self.edit_button = Button(self.edit_frame2, text="Edit", command=self.edit_image, width=10)
         self.edit_button.pack(side='top', padx=5, pady=5)
         self.edit_button.config(state='disabled')
+
+        self.saveimage_button = Button(self.edit_frame2, text="Save Image", command=self.save_image, width=10)
+        self.saveimage_button.pack(side='bottom', padx=5, pady=5)
+        self.saveimage_button.config(state='disabled')
 
         # Initialize variables
         self.images = []
@@ -103,7 +107,10 @@ class ImageViewer:
             # Enable or disable the previous/next buttons based on the current image index
             self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
             self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
+
+            # Enable the edit/save buttons
             self.edit_button.config(state="normal")
+            self.saveimage_button.config(state="normal")
 
     def load_previous_image(self):
         if self.image_index > 0:
@@ -142,8 +149,10 @@ class ImageViewer:
         self.next_button.config(state="disabled")
 
     def edit_image(self):
-        if self.images:
-            print('hello')
+        pass
+
+    def save_image(self):
+        print('image saved')
 
 # Create the Tkinter root window
 root = Tk()
