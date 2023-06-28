@@ -200,15 +200,19 @@ class ImageViewer:
     def save_image(self):
         if self.images:
             # Get the current image file path
-            file_path, _ = self.images[self.image_index]
+            _, edited_img = self.images[self.image_index]
+
+            # Convert Tkinter image back to Pillow image
+            pil_image = ImageTk.getimage(edited_img)
 
             # Open the file dialog to select a save location
             save_path = filedialog.asksaveasfilename(defaultextension=".png")
 
             if save_path:
                 # Save the image
-                image = Image.open(file_path)
-                image.save(save_path)
+                # image = Image.open(file_path)
+                # image.save(save_path)
+                pil_image.save(save_path)
 
 
 # Create the Tkinter root window
