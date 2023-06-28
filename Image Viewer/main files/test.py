@@ -79,6 +79,7 @@ class ImageViewer:
 
                     # Load the image using PIL
                     image = Image.open(file_path)
+
                     root_width = self.root.winfo_width()
                     root_height = self.root.winfo_height()
                     new_width = int(root_width * 0.8)
@@ -164,19 +165,19 @@ class ImageViewer:
             edit_window.resizable(False, False)
 
             # Create a button to apply the edits and update the main window image
-            apply_button = Button(edit_window, text="Apply", command=lambda: self.edit_image(file_path))
+            apply_button = Button(edit_window, text="Apply", command=lambda: self.edit_image(file_path, image_tk))
             apply_button.pack(padx=5, pady=5)
 
             # Close the edit window when the main window is closed
             edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
 
-    def edit_image(self, file_path):
+    def edit_image(self, file_path, image_tk):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
             # file_path, _ = self.images[self.image_index]
 
-            # Reload the edited image using PIL
-            edited_image = Image.open(file_path)
+            # Convert Tkinter image back to Pillow image
+            edited_image = ImageTk.getimage(image_tk)
 
             # Convert the edited image to a NumPy array
             edited_image_np = np.array(edited_image)
