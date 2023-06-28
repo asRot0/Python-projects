@@ -23,40 +23,26 @@ class ImageViewer:
 
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg='#CFCFCF')
-        self.edit_frame.grid(row=0, column=1, rowspan=1, sticky='e')
-
-        # Create a frame2 for the editing section
-        self.edit_frame2 = Frame(self.root, bg='#CFCFCF')
-        self.edit_frame2.grid(row=1, column=1, rowspan=1, sticky='en')
+        self.edit_frame.grid(row=0, column=1, rowspan=2, sticky='nesw')
 
         # Create buttons for image navigation
-        self.prev_button = Button(self.image_button_frame, text="Previous", command=self.load_previous_image,
-                                  width=40, bg='#BDBFBF')
+        self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF')
         self.prev_button.pack(side="left", padx=5, pady=5)
 
-        self.next_button = Button(self.image_button_frame, text="Next", command=self.load_next_image,
-                                  width=40, bg='#BDBFBF')
+        self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF')
         self.next_button.pack(side="right", padx=5, pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.edit_frame, text="Open Image", command=self.open_image,
-                                  bg='#BDBFBF')
+        self.open_button = Button(self.edit_frame, text="Open Image", bg='#BDBFBF')
         self.open_button.pack(side='right', padx=5, pady=5)
 
         # Create a button to delete the current image
-        self.delete_button = Button(self.edit_frame, text="Delete Image", command=self.delete_image,
-                                    bg='#BDBFBF')
+        self.delete_button = Button(self.edit_frame, text="Delete Image", bg='#BDBFBF')
         self.delete_button.pack(side='right', padx=5, pady=5)
 
-        self.edit_button = Button(self.edit_frame2, text="Edit", command=self.edit_image,
-                                  width=10, bg='#BDBFBF')
-        self.edit_button.pack(side='top', padx=5, pady=5)
-        self.edit_button.config(state='disabled')
-
-        self.save_image_button = Button(self.edit_frame2, text="Save Image", command=self.save_image,
-                                        width=10, bg='#BDBFBF')
-        self.save_image_button.pack(side='bottom', padx=5, pady=5)
-        self.save_image_button.config(state='disabled')
+        # Create a button to apply edits to the current image
+        self.apply_button = Button(self.edit_frame, text="Apply Edits", bg='#BDBFBF')
+        self.apply_button.pack(side='right', padx=5, pady=5)
 
         # Initialize variables
         self.images = []
@@ -214,12 +200,19 @@ root.config(bg='#9B9C9C')
 
 # Configure grid row and column weights
 root.grid_rowconfigure(0, weight=0)
-root.grid_rowconfigure(1, weight=0)
+root.grid_rowconfigure(1, weight=1)
 root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(1, weight=0)
 
 # Create the image viewer instance
 image_viewer = ImageViewer(root)
+
+# Bind the buttons to their respective functions
+image_viewer.open_button.config(command=image_viewer.open_image)
+image_viewer.prev_button.config(command=image_viewer.load_previous_image)
+image_viewer.next_button.config(command=image_viewer.load_next_image)
+image_viewer.delete_button.config(command=image_viewer.delete_image)
+image_viewer.apply_button.config(command=image_viewer.apply_edits)
 
 # Start the Tkinter event loop
 root.mainloop()
