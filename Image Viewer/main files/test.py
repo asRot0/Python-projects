@@ -25,6 +25,9 @@ class ImageViewer:
         self.edit_frame = Frame(self.root, bg='#CFCFCF')
         self.edit_frame.grid(row=0, column=1, rowspan=2, sticky='nesw')
 
+        self.edit_frame2 = Frame(self.root, bg='#CFCFCF')
+        self.edit_frame2.grid(row=2, column=1, rowspan=1, sticky='nesw')
+
         # Create buttons for image navigation
         self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF')
         self.prev_button.pack(side="left", padx=5, pady=5)
@@ -43,6 +46,9 @@ class ImageViewer:
         # Create a button to apply edits to the current image
         self.apply_button = Button(self.edit_frame, text="Apply Edits", bg='#BDBFBF')
         self.apply_button.pack(side='right', padx=5, pady=5)
+
+        self.save_image_button = Button(self.edit_frame2, text="Save Image", bg='#BDBFBF')
+        self.save_image_button.pack(side='left', padx=5, pady=5)
 
         # Initialize variables
         self.images = []
@@ -201,6 +207,7 @@ root.config(bg='#9B9C9C')
 # Configure grid row and column weights
 root.grid_rowconfigure(0, weight=0)
 root.grid_rowconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=0)
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=0)
 
@@ -213,6 +220,7 @@ image_viewer.prev_button.config(command=image_viewer.load_previous_image)
 image_viewer.next_button.config(command=image_viewer.load_next_image)
 image_viewer.delete_button.config(command=image_viewer.delete_image)
 image_viewer.apply_button.config(command=image_viewer.apply_edits)
+image_viewer.save_image_button.config(command=image_viewer.save_image)
 
 # Start the Tkinter event loop
 root.mainloop()
