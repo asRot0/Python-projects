@@ -152,7 +152,7 @@ class ImageViewer:
         self.prev_button.config(state="disabled")
         self.next_button.config(state="disabled")
 
-    def edit_image(self):
+    def apply_edits(self):
         if self.images:
             # Get the current image file path
             file_path, image_tk = self.images[self.image_index]
@@ -161,21 +161,19 @@ class ImageViewer:
             edit_window = Toplevel(self.root)
             edit_window.title("Image Editor")
             edit_window.geometry('300x300')
-
-            #edit_window.resizable(False, False)
-
+            edit_window.resizable(False, False)
 
             # Create a button to apply the edits and update the main window image
-            apply_button = Button(edit_window, text="Apply", command=lambda: self.apply_edits(file_path))
+            apply_button = Button(edit_window, text="Apply", command=lambda: self.edit_image(file_path))
             apply_button.pack(padx=5, pady=5)
 
             # Close the edit window when the main window is closed
             edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
 
-    def apply_edits(self):
+    def edit_image(self, file_path):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
-            file_path, image_tk = self.images[self.image_index]
+            # file_path, _ = self.images[self.image_index]
 
             # Reload the edited image using PIL
             edited_image = Image.open(file_path)
@@ -212,23 +210,24 @@ class ImageViewer:
                 image = Image.open(file_path)
                 image.save(save_path)
 
+
 # Create the Tkinter root window
-root = Tk()
+window = Tk()
 
 # Set the window size
-root.geometry('1000x500')
-root.resizable(False, False)
-root.config(bg='#9B9C9C')
+window.geometry('1000x500')
+window.resizable(False, False)
+window.config(bg='#9B9C9C')
 
 # Configure grid row and column weights
-root.grid_rowconfigure(0, weight=0)
-root.grid_rowconfigure(1, weight=1)
-root.grid_rowconfigure(2, weight=0)
-root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=0)
+window.grid_rowconfigure(0, weight=0)
+window.grid_rowconfigure(1, weight=1)
+window.grid_rowconfigure(2, weight=0)
+window.grid_columnconfigure(0, weight=1)
+window.grid_columnconfigure(1, weight=0)
 
 # Create the image viewer instance
-image_viewer = ImageViewer(root)
+image_viewer = ImageViewer(window)
 
 # Bind the buttons to their respective functions
 image_viewer.open_button.config(command=image_viewer.open_image)
@@ -239,4 +238,4 @@ image_viewer.apply_button.config(command=image_viewer.apply_edits)
 image_viewer.save_image_button.config(command=image_viewer.save_image)
 
 # Start the Tkinter event loop
-root.mainloop()
+window.mainloop()
