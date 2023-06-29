@@ -124,7 +124,7 @@ class ImageViewer:
             self.root.title(f"Image Viewer - {os.path.basename(file_path)}")
 
             # update the info box
-            self.update_image_info(file_path)
+            self.update_image_info(file_path, image_tk)
 
             # Enable or disable the previous/next buttons based on the current image index
             self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
@@ -171,11 +171,10 @@ class ImageViewer:
         self.prev_button.config(state="disabled")
         self.next_button.config(state="disabled")
 
-    def update_image_info(self, file_path):
+    def update_image_info(self, file_path, image_tk):
         # Extract and display the image info in the label
         file_name = os.path.basename(file_path)
         directory_name = os.path.dirname(file_path)
-        image_tk = self.images[self.image_index][1]
         width = image_tk.width()
         height = image_tk.height()
 
