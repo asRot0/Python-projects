@@ -65,7 +65,7 @@ class ImageViewer:
         if directory:
             # Get a list of image files in the selected directory
             image_files = [file for file in os.listdir(directory) if
-                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.jfif'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -94,10 +94,24 @@ class ImageViewer:
                     self.images.append((file_path, image_tk))
 
                 # Display the first image
+                self.image_index = 0
                 self.load_image()
+            else:
+                # If no valid image files found, clear the images
+                self.clear_images()
+        else:
+            # If no directory selected, clear the images
+            self.clear_images()
+
+    def clear_images(self):
+        # Clear the images list
+        self.images = []
+
+        # Clear the image label
+        self.clear_image()
 
     def load_image(self):
-        if self.images:
+        if self.images and self.image_index < len(self.images):
             # Get the current image file and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
 
@@ -226,7 +240,7 @@ class ImageViewer:
 window = Tk()
 
 # Set the window size
-window.geometry('1000x500')
+window.geometry('1050x550')
 window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
