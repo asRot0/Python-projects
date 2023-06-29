@@ -182,7 +182,7 @@ class ImageViewer:
             # Convert the edited image to a NumPy array
             edited_image_np = np.array(edited_image)
 
-            # Apply the color conversion using OpenCV
+            # Convert the image to grayscale using OpenCV
             edited_img = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2GRAY)
 
             # Convert the edited image back to PIL format
