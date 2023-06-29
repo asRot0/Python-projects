@@ -1,5 +1,5 @@
 import os
-from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel
+from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel, Scale, HORIZONTAL
 from PIL import ImageTk, Image
 import cv2
 import numpy as np
@@ -164,14 +164,24 @@ class ImageViewer:
             edit_window.geometry('300x300')
             edit_window.resizable(False, False)
 
+            # Create Scale widgets to adjust the editing parameters
+            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, label="Brightness")
+            brightness_scale.pack(padx=5, pady=5)
+
+            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, label="Contrast")
+            contrast_scale.pack(padx=5, pady=5)
+
             # Create a button to apply the edits and update the main window image
-            apply_button = Button(edit_window, text="Apply", command=lambda: self.edit_image(file_path, image_tk))
+            apply_button = Button(edit_window, text="Apply",
+                                  command=lambda: self.apply_edits_params(file_path,
+                                                                          image_tk, brightness_scale.get(),
+                                                                          contrast_scale.get()))
             apply_button.pack(padx=5, pady=5)
 
             # Close the edit window when the main window is closed
             edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
 
-    def edit_image(self, file_path, image_tk):
+    def apply_edits_params(self, file_path, image_tk, brightness, contrast):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
             # file_path, _ = self.images[self.image_index]
@@ -182,11 +192,12 @@ class ImageViewer:
             # Convert the edited image to a NumPy array
             edited_image_np = np.array(edited_image)
 
-            # Convert the image to grayscale using OpenCV
-            edited_img = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2GRAY)
+            # Apply brightness and contrast adjustments using OpenCV
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+            edited_image_np = cv2.convertScaleAbs(edited_image_np, alpha=contrast, beta=brightness)
 
             # Convert the edited image back to PIL format
-            edited_image_pil = Image.fromarray(edited_img)
+            edited_image_pil = Image.fromarray(edited_image_np)
 
             # Convert the edited image to Tkinter PhotoImage
             edited_image_tk = ImageTk.PhotoImage(edited_image_pil)
