@@ -211,7 +211,7 @@ class ImageViewer:
         height = image_tk.height()
 
         file_info = f"Directory: {directory_name_formatted}\n"
-        file_info += f"Name: {file_name_formatted}\n"
+        file_info += f"File Name: {file_name_formatted}\n"
         file_info += f"Size: {width} x {height} -- modified"
         # file_info += f"File: {file_path}"
         self.image_info_label.config(text=file_info, justify='left')
