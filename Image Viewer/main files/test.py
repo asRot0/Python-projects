@@ -89,7 +89,7 @@ class ImageViewer:
         if directory:
             # Get a list of image files in the selected directory
             image_files = [file for file in os.listdir(directory) if
-                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.jfif'))]
+                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.jfif', '.bmp', '.tiff', '.ico'))]
 
             if image_files:
                 # Sort the image files alphabetically
