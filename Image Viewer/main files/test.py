@@ -199,14 +199,18 @@ class ImageViewer:
         directory_name = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
 
-        # Split the file name into multiple lines with 15 characters per line
+        # Split the directory name into multiple lines with 32 characters per line
+        lines = [directory_name[i:i+32] for i in range(0, len(directory_name), 32)]
+        directory_name_formatted = '\n'.join(lines)
+
+        # Split the file name into multiple lines with 32 characters per line
         lines = [file_name[i:i+32] for i in range(0, len(file_name), 32)]
         file_name_formatted = '\n'.join(lines)
 
         width = image_tk.width()
         height = image_tk.height()
 
-        file_info = f"Directory: {directory_name}\n"
+        file_info = f"Directory: {directory_name_formatted}\n"
         file_info += f"Name: {file_name_formatted}\n"
         file_info += f"Size: {width} x {height} -- modified"
         # file_info += f"File: {file_path}"
