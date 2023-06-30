@@ -58,7 +58,7 @@ class ImageViewer:
                                         state="disabled")
         self.save_image_button.pack(side='left', padx=5, pady=5)
 
-        # Create a Button
+        # Create a info Label
         self.image_info_label = Label(self.image_info_frame, text="INFO", bg='#BDBFBF')
         self.image_info_label.pack(side='left', padx=5, pady=5)
 
@@ -130,6 +130,9 @@ class ImageViewer:
             # Update the window title with the image file name
             self.root.title(f"Image Viewer - {os.path.basename(file_path)}")
 
+            # update the info box
+            self.update_image_info(file_path, image_tk)
+
             # Enable or disable the previous/next buttons based on the current image index
             self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
             self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
@@ -175,12 +178,23 @@ class ImageViewer:
         self.prev_button.config(state="disabled")
         self.next_button.config(state="disabled")
 
-    def update_image_info(self, file_path):
+    def update_image_info(self, file_path, image_tk):
         # Extract and display the image info in the label
+        directory_name = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
-        file_size = os.path.getsize(file_path)
-        file_info = f"Name: {file_name} | Size: {file_size} bytes"
-        self.image_info_label.config(text=file_info)
+
+        # Split the file name into multiple lines with 15 characters per line
+        lines = [file_name[i:i+32] for i in range(0, len(file_name), 32)]
+        file_name_formatted = '\n'.join(lines)
+
+        width = image_tk.width()
+        height = image_tk.height()
+
+        file_info = f"Directory: {directory_name}\n"
+        file_info += f"Name: {file_name_formatted}\n"
+        file_info += f"Size: {width} x {height} -- modified"
+        # file_info += f"File: {file_path}"
+        self.image_info_label.config(text=file_info, anchor='w')
 
     def apply_edits(self):
         if self.images:
@@ -256,7 +270,7 @@ window = Tk()
 
 # Set the window size
 window.geometry('1050x550')
-#window.resizable(False, False)
+window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
 # Configure grid row and column weights
