@@ -28,3 +28,4 @@ if drive_path:
     print(f"Total number of photos: {photo_count}")
 else:
     print("No drive path selected.")
+

@@ -1,5 +1,6 @@
 import os
-from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel, Scale, HORIZONTAL
+from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel, Scale, HORIZONTAL, \
+    Checkbutton, BooleanVar, font
 from PIL import ImageTk, Image
 import cv2
 import numpy as np
@@ -63,9 +64,23 @@ class ImageViewer:
                                         state="disabled")
         self.save_image_button.pack(side='left', padx=5, pady=5)
 
+        # Create a checkbutton for resizable option
+        self.resizable_var = BooleanVar()
+        self.resizable_var.set(False)  # Initial value is resizable
+
+        self.resizable_checkbutton = Checkbutton(self.edit_frame2, text="Resizable",
+                                                 variable=self.resizable_var,
+                                                 command=self.toggle_resizable,
+                                                 bg='#CFCFCF', font=font.Font(size=8))
+        self.resizable_checkbutton.pack(side='left', padx=5, pady=5)
+
         # Initialize variables
         self.images = []
         self.image_index = 0
+
+    def toggle_resizable(self):
+        resizable = self.resizable_var.get()
+        self.root.resizable(resizable, resizable)
 
     def open_image(self):
         # Open a file dialog to select a directory
