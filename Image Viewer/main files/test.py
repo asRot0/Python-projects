@@ -66,7 +66,7 @@ class ImageViewer:
 
         # Create a checkbutton for resizable option
         self.resizable_var = BooleanVar()
-        self.resizable_var.set(False)  # Initial value is resizable
+        self.resizable_var.set(False)  # Initial value is not resizable
 
         self.resizable_checkbutton = Checkbutton(self.edit_frame2, text="Resizable",
                                                  variable=self.resizable_var,
@@ -291,7 +291,7 @@ window = Tk()
 
 # Set the window size
 window.geometry('1040x520')
-# window.resizable(False, False)
+window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
 # Configure grid row and column weights
