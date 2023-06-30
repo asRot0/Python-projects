@@ -218,28 +218,32 @@ class ImageViewer:
 
     def apply_edits(self):
         if self.images:
-            # Get the current image file path
+            # Get the current image file path and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
 
             # Create a new Toplevel window for editing
             edit_window = Toplevel(self.root)
             edit_window.title("Image Editor")
-            edit_window.geometry('300x300')
-            edit_window.resizable(False, False)
 
             # Create Scale widgets to adjust the editing parameters
-            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, label="Brightness")
-            brightness_scale.pack(padx=5, pady=5)
+            brightness_label = Label(edit_window, text="Brightness")
+            brightness_label.grid(row=0, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, label="Contrast")
-            contrast_scale.pack(padx=5, pady=5)
+            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
+            brightness_scale.grid(row=0, column=1, padx=2, pady=1, sticky="w")
 
-            # Create a button to apply the edits and update the main window image
+            contrast_label = Label(edit_window, text="Contrast")
+            contrast_label.grid(row=1, column=0, padx=5, pady=(15, 0), sticky="w")
+
+            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
+            contrast_scale.grid(row=1, column=1, padx=2, pady=1, sticky="w")
+
+            # Add an Apply button to perform the image edits
             apply_button = Button(edit_window, text="Apply",
-                                  command=lambda: self.apply_edits_params(file_path,
-                                                                          image_tk, brightness_scale.get(),
+                                  command=lambda: self.apply_edits_params(file_path, image_tk,
+                                                                          brightness_scale.get(),
                                                                           contrast_scale.get()))
-            apply_button.pack(padx=5, pady=5)
+            apply_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
             # Close the edit window when the main window is closed
             edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
