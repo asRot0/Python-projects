@@ -269,7 +269,7 @@ class ImageViewer:
 window = Tk()
 
 # Set the window size
-window.geometry('1050x550')
+window.geometry('1000x500')
 window.resizable(False, False)
 window.config(bg='#9B9C9C')
 

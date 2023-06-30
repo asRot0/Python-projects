@@ -34,22 +34,31 @@ class ImageViewer:
         self.prev_button.pack(side="left", padx=5, pady=5)
 
         self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF')
-        self.next_button.pack(side="right", padx=5, pady=5)
+        self.next_button.pack(side="left", padx=5, pady=5)
+
+        # Create a frame for the buttons
+        self.buttons_frame = Frame(self.edit_frame, bg='#CFCFCF')
+        self.buttons_frame.pack(side='top', pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.edit_frame, text="Open Image", bg='#BDBFBF')
-        self.open_button.pack(side='right', padx=5, pady=5)
+        self.open_button = Button(self.buttons_frame, text="Open Image", bg='#BDBFBF')
+        self.open_button.pack(side='left', padx=5, pady=5)
 
         # Create a button to delete the current image
-        self.delete_button = Button(self.edit_frame, text="Delete Image", bg='#BDBFBF',
+        self.delete_button = Button(self.buttons_frame, text="Delete Image", bg='#BDBFBF',
                                     state="disabled")
-        self.delete_button.pack(side='right', padx=5, pady=5)
+        self.delete_button.pack(side='left', padx=5, pady=5)
 
         # Create a button to apply edits to the current image
-        self.apply_button = Button(self.edit_frame, text="Apply Edits", bg='#BDBFBF',
+        self.apply_button = Button(self.buttons_frame, text="Apply Edits", bg='#BDBFBF',
                                    state="disabled")
-        self.apply_button.pack(side='right', padx=5, pady=5)
+        self.apply_button.pack(side='left', padx=5, pady=5)
 
+        # Create a label for image info
+        self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left')
+        self.image_info_label.pack(side='top', padx=5, pady=5, anchor='nw')
+
+        # Create a button to save the current image
         self.save_image_button = Button(self.edit_frame2, text="Save Image", bg='#BDBFBF',
                                         state="disabled")
         self.save_image_button.pack(side='left', padx=5, pady=5)
@@ -172,16 +181,21 @@ class ImageViewer:
 
     def update_image_info(self, file_path, image_tk):
         # Extract and display the image info in the label
-        file_name = os.path.basename(file_path)
         directory_name = os.path.dirname(file_path)
+        file_name = os.path.basename(file_path)
+
+        # Split the file name into multiple lines with 15 characters per line
+        lines = [file_name[i:i+32] for i in range(0, len(file_name), 32)]
+        file_name_formatted = '\n'.join(lines)
+
         width = image_tk.width()
         height = image_tk.height()
 
         file_info = f"Directory: {directory_name}\n"
-        file_info += f"Name: {file_name}\n"
-        file_info += f"Size: {width} x {height} -- modified\n"
-        file_info += f"File: {file_path}"
-        self.image_info_label.config(text=file_info)
+        file_info += f"Name: {file_name_formatted}\n"
+        file_info += f"Size: {width} x {height} -- modified"
+        # file_info += f"File: {file_path}"
+        self.image_info_label.config(text=file_info, justify='left')
 
     def apply_edits(self):
         if self.images:
@@ -261,8 +275,8 @@ class ImageViewer:
 window = Tk()
 
 # Set the window size
-window.geometry('1000x550')
-window.resizable(False, False)
+window.geometry('1040x520')
+# window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
 # Configure grid row and column weights
