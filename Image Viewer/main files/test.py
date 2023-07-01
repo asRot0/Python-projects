@@ -56,7 +56,8 @@ class ImageViewer:
         self.apply_button.pack(side='left', padx=5, pady=5)
 
         # Create a label for image info
-        self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left')
+        self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left',
+                                      width=34)
         self.image_info_label.pack(side='top', padx=5, pady=5, anchor='nw')
 
         # Create a button to save the current image
@@ -200,12 +201,14 @@ class ImageViewer:
         file_name = os.path.basename(file_path)
 
         # Split the directory name into multiple lines with 32 characters per line
-        lines = [directory_name[i:i+32] for i in range(0, len(directory_name), 32)]
-        directory_name_formatted = '\n'.join(lines)
+        lines = [directory_name[i:i + 32] for i in range(0, len(directory_name), 32)]
+        directory_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 19 + line for line in lines[1:])
 
-        # Split the file name into multiple lines with 32 characters per line
-        lines = [file_name[i:i+32] for i in range(0, len(file_name), 32)]
-        file_name_formatted = '\n'.join(lines)
+        # Split the file name into multiple lines with 30 characters per line
+        lines = [file_name[i:i + 30] for i in range(0, len(file_name), 30)]
+        file_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 20 + line for line in lines[1:])
+        if len(file_name_formatted.strip()) < 30:
+            file_name_formatted = file_name_formatted.strip()
 
         width = image_tk.width()
         height = image_tk.height()
