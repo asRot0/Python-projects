@@ -8,6 +8,7 @@ import numpy as np
 
 class ImageViewer:
     def __init__(self, root):
+        self.edit_window = None
         self.root = root
         self.root.title("Image Viewer")
 
@@ -159,6 +160,9 @@ class ImageViewer:
             self.save_image_button.config(state="normal")
             self.delete_button.config(state="normal")
 
+            # Destroy the edit window
+            self.destroy_edit_window()
+
     def load_previous_image(self):
         if self.image_index > 0:
             self.image_index -= 1
@@ -219,37 +223,45 @@ class ImageViewer:
         # file_info += f"File: {file_path}"
         self.image_info_label.config(text=file_info, justify='left')
 
+    def destroy_edit_window(self):
+        if self.edit_window:
+            self.edit_window.destroy()
+            self.edit_window = None
+
     def apply_edits(self):
         if self.images:
             # Get the current image file path and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
 
+            # Destroy any existing edit window
+            self.destroy_edit_window()
+
             # Create a new Toplevel window for editing
-            edit_window = Toplevel(self.root)
-            edit_window.title("Image Editor")
+            self.edit_window = Toplevel(self.root)
+            self.edit_window.title("Image Editor")
 
             # Create Scale widgets to adjust the editing parameters
-            brightness_label = Label(edit_window, text="Brightness")
+            brightness_label = Label(self.edit_window, text="Brightness")
             brightness_label.grid(row=0, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
+            brightness_scale = Scale(self.edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
             brightness_scale.grid(row=0, column=1, padx=2, pady=1, sticky="w")
 
-            contrast_label = Label(edit_window, text="Contrast")
+            contrast_label = Label(self.edit_window, text="Contrast")
             contrast_label.grid(row=1, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
+            contrast_scale = Scale(self.edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
             contrast_scale.grid(row=1, column=1, padx=2, pady=1, sticky="w")
 
             # Add an Apply button to perform the image edits
-            apply_button = Button(edit_window, text="Apply",
+            apply_button = Button(self.edit_window, text="Apply",
                                   command=lambda: self.apply_edits_params(file_path, image_tk,
                                                                           brightness_scale.get(),
                                                                           contrast_scale.get()))
             apply_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
             # Close the edit window when the main window is closed
-            edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
+            self.edit_window.protocol("WM_DELETE_WINDOW", self.destroy_edit_window)
 
     def apply_edits_params(self, file_path, image_tk, brightness, contrast):
         if self.images:
