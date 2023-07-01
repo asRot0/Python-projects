@@ -1,5 +1,6 @@
 import os
-from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel, Scale, HORIZONTAL
+from tkinter import Tk, Frame, Label, Button, filedialog, Toplevel, Scale, HORIZONTAL, \
+    Checkbutton, BooleanVar, font
 from PIL import ImageTk, Image
 import cv2
 import numpy as np
@@ -7,6 +8,7 @@ import numpy as np
 
 class ImageViewer:
     def __init__(self, root):
+        self.edit_window = None
         self.root = root
         self.root.title("Image Viewer")
 
@@ -22,13 +24,9 @@ class ImageViewer:
         self.image_label = Label(self.image_frame, bg='#9B9C9C')
         self.image_label.pack(fill='both', expand=True)
 
-        # Create a label to display the image info
-        self.image_info_frame = Frame(self.root, bg='#CFCFCF')
-        self.image_info_frame.grid(row=0, column=1, rowspan=1, sticky='nsew')
-
         # Create a frame for the editing section
         self.edit_frame = Frame(self.root, bg='#CFCFCF')
-        self.edit_frame.grid(row=1, column=1, rowspan=2, sticky='nsew')
+        self.edit_frame.grid(row=0, column=1, rowspan=2, sticky='nsew')
 
         self.edit_frame2 = Frame(self.root, bg='#CFCFCF')
         self.edit_frame2.grid(row=2, column=1, rowspan=1, sticky='nsew')
@@ -38,33 +36,53 @@ class ImageViewer:
         self.prev_button.pack(side="left", padx=5, pady=5)
 
         self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF')
-        self.next_button.pack(side="right", padx=5, pady=5)
+        self.next_button.pack(side="left", padx=5, pady=5)
+
+        # Create a frame for the buttons
+        self.buttons_frame = Frame(self.edit_frame, bg='#CFCFCF')
+        self.buttons_frame.pack(side='top', pady=5)
 
         # Create a button to open the file dialog
-        self.open_button = Button(self.edit_frame, text="Open Image", bg='#BDBFBF')
-        self.open_button.pack(side='right', padx=5, pady=5)
+        self.open_button = Button(self.buttons_frame, text="Open Image", bg='#BDBFBF')
+        self.open_button.pack(side='left', padx=5, pady=5)
 
         # Create a button to delete the current image
-        self.delete_button = Button(self.edit_frame, text="Delete Image", bg='#BDBFBF',
+        self.delete_button = Button(self.buttons_frame, text="Delete Image", bg='#BDBFBF',
                                     state="disabled")
-        self.delete_button.pack(side='right', padx=5, pady=5)
+        self.delete_button.pack(side='left', padx=5, pady=5)
 
-        # Create a button to save and apply edits to the current image
-        self.apply_button = Button(self.edit_frame, text="Apply Edits", bg='#BDBFBF',
+        # Create a button to apply edits to the current image
+        self.apply_button = Button(self.buttons_frame, text="Apply Edits", bg='#BDBFBF',
                                    state="disabled")
-        self.apply_button.pack(side='right', padx=5, pady=5)
+        self.apply_button.pack(side='left', padx=5, pady=5)
 
+        # Create a label for image info
+        self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left',
+                                      width=34)
+        self.image_info_label.pack(side='top', padx=5, pady=5, anchor='nw')
+
+        # Create a button to save the current image
         self.save_image_button = Button(self.edit_frame2, text="Save Image", bg='#BDBFBF',
                                         state="disabled")
         self.save_image_button.pack(side='left', padx=5, pady=5)
 
-        # Create a info Label
-        self.image_info_label = Label(self.image_info_frame, text="INFO", bg='#BDBFBF')
-        self.image_info_label.pack(side='left', padx=5, pady=5)
+        # Create a checkbutton for resizable option
+        self.resizable_var = BooleanVar()
+        self.resizable_var.set(False)  # Initial value is not resizable
+
+        self.resizable_checkbutton = Checkbutton(self.edit_frame2, text="Resizable",
+                                                 variable=self.resizable_var,
+                                                 command=self.toggle_resizable,
+                                                 bg='#CFCFCF', font=font.Font(size=8))
+        self.resizable_checkbutton.pack(side='left', padx=5, pady=5)
 
         # Initialize variables
         self.images = []
         self.image_index = 0
+
+    def toggle_resizable(self):
+        resizable = self.resizable_var.get()
+        self.root.resizable(resizable, resizable)
 
     def open_image(self):
         # Open a file dialog to select a directory
@@ -73,7 +91,7 @@ class ImageViewer:
         if directory:
             # Get a list of image files in the selected directory
             image_files = [file for file in os.listdir(directory) if
-                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.jfif'))]
+                           file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.jfif', '.bmp', '.tiff', '.ico'))]
 
             if image_files:
                 # Sort the image files alphabetically
@@ -142,6 +160,9 @@ class ImageViewer:
             self.save_image_button.config(state="normal")
             self.delete_button.config(state="normal")
 
+            # Destroy the edit window
+            self.destroy_edit_window()
+
     def load_previous_image(self):
         if self.image_index > 0:
             self.image_index -= 1
@@ -183,50 +204,64 @@ class ImageViewer:
         directory_name = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
 
-        # Split the file name into multiple lines with 10 characters per line
-        lines = [file_name[i:i+10] for i in range(0, len(file_name), 10)]
-        file_name_formatted = '\n'.join(lines)
+        # Split the directory name into multiple lines with 32 characters per line
+        lines = [directory_name[i:i + 32] for i in range(0, len(directory_name), 32)]
+        directory_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 19 + line for line in lines[1:])
+
+        # Split the file name into multiple lines with 30 characters per line
+        lines = [file_name[i:i + 30] for i in range(0, len(file_name), 30)]
+        file_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 20 + line for line in lines[1:])
+        if len(file_name_formatted.strip()) < 30:
+            file_name_formatted = file_name_formatted.strip()
 
         width = image_tk.width()
         height = image_tk.height()
 
-        file_info = f"Directory: {directory_name}\n"
-        file_info += f"Name: {file_name_formatted}\n"
+        file_info = f"Directory: {directory_name_formatted}\n"
+        file_info += f"File Name: {file_name_formatted}\n"
         file_info += f"Size: {width} x {height} -- modified"
         # file_info += f"File: {file_path}"
-        self.image_info_label.config(text=file_info, anchor='w')
+        self.image_info_label.config(text=file_info, justify='left')
+
+    def destroy_edit_window(self):
+        if self.edit_window:
+            self.edit_window.destroy()
+            self.edit_window = None
 
     def apply_edits(self):
         if self.images:
             # Get the current image file path and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
 
+            # Destroy any existing edit window
+            self.destroy_edit_window()
+
             # Create a new Toplevel window for editing
-            edit_window = Toplevel(self.root)
-            edit_window.title("Image Editor")
+            self.edit_window = Toplevel(self.root)
+            self.edit_window.title("Image Editor")
 
             # Create Scale widgets to adjust the editing parameters
-            brightness_label = Label(edit_window, text="Brightness")
+            brightness_label = Label(self.edit_window, text="Brightness")
             brightness_label.grid(row=0, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
+            brightness_scale = Scale(self.edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
             brightness_scale.grid(row=0, column=1, padx=2, pady=1, sticky="w")
 
-            contrast_label = Label(edit_window, text="Contrast")
+            contrast_label = Label(self.edit_window, text="Contrast")
             contrast_label.grid(row=1, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
+            contrast_scale = Scale(self.edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
             contrast_scale.grid(row=1, column=1, padx=2, pady=1, sticky="w")
 
             # Add an Apply button to perform the image edits
-            apply_button = Button(edit_window, text="Apply",
+            apply_button = Button(self.edit_window, text="Apply",
                                   command=lambda: self.apply_edits_params(file_path, image_tk,
                                                                           brightness_scale.get(),
                                                                           contrast_scale.get()))
             apply_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
             # Close the edit window when the main window is closed
-            edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
+            self.edit_window.protocol("WM_DELETE_WINDOW", self.destroy_edit_window)
 
     def apply_edits_params(self, file_path, image_tk, brightness, contrast):
         if self.images:
@@ -278,7 +313,7 @@ class ImageViewer:
 window = Tk()
 
 # Set the window size
-window.geometry('1000x500')
+window.geometry('1040x520')
 window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
