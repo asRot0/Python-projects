@@ -183,8 +183,8 @@ class ImageViewer:
         directory_name = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
 
-        # Split the file name into multiple lines with 15 characters per line
-        lines = [file_name[i:i+32] for i in range(0, len(file_name), 32)]
+        # Split the file name into multiple lines with 10 characters per line
+        lines = [file_name[i:i+10] for i in range(0, len(file_name), 10)]
         file_name_formatted = '\n'.join(lines)
 
         width = image_tk.width()
@@ -206,15 +206,24 @@ class ImageViewer:
             edit_window.title("Image Editor")
 
             # Create Scale widgets to adjust the editing parameters
-            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, label="Brightness")
-            brightness_scale.pack(padx=5, pady=5)
+            brightness_label = Label(edit_window, text="Brightness")
+            brightness_label.grid(row=0, column=0, padx=5, pady=(15, 0), sticky="w")
 
-            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, label="Contrast")
-            contrast_scale.pack(padx=5, pady=5)
+            brightness_scale = Scale(edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
+            brightness_scale.grid(row=0, column=1, padx=2, pady=1, sticky="w")
 
-            # Create a```python
-            apply_button = Button(edit_window, text="Apply", command=lambda: self.apply_edits_params(file_path, image_tk, brightness_scale.get(), contrast_scale.get()))
-            apply_button.pack(padx=5, pady=5)
+            contrast_label = Label(edit_window, text="Contrast")
+            contrast_label.grid(row=1, column=0, padx=5, pady=(15, 0), sticky="w")
+
+            contrast_scale = Scale(edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
+            contrast_scale.grid(row=1, column=1, padx=2, pady=1, sticky="w")
+
+            # Add an Apply button to perform the image edits
+            apply_button = Button(edit_window, text="Apply",
+                                  command=lambda: self.apply_edits_params(file_path, image_tk,
+                                                                          brightness_scale.get(),
+                                                                          contrast_scale.get()))
+            apply_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
             # Close the edit window when the main window is closed
             edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy)
