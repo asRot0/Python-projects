@@ -207,11 +207,13 @@ class ImageViewer:
         # Split the directory name into multiple lines with 32 characters per line
         lines = [directory_name[i:i + 32] for i in range(0, len(directory_name), 32)]
         directory_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 19 + line for line in lines[1:])
+        if len(directory_name_formatted.strip()) <= 32:
+            directory_name_formatted = directory_name_formatted.strip()
 
         # Split the file name into multiple lines with 30 characters per line
         lines = [file_name[i:i + 30] for i in range(0, len(file_name), 30)]
         file_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 20 + line for line in lines[1:])
-        if len(file_name_formatted.strip()) < 30:
+        if len(file_name_formatted.strip()) <= 30:
             file_name_formatted = file_name_formatted.strip()
 
         width = image_tk.width()
