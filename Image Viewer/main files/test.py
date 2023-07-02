@@ -59,7 +59,7 @@ class ImageViewer:
         # Create a label for image info
         self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left',
                                       width=34)
-        self.image_info_label.pack(side='top', padx=5, pady=5, anchor='nw')
+        self.image_info_label.pack(side='bottom', padx=5, pady=5, anchor='nw')
 
         # Create a button to save the current image
         self.save_image_button = Button(self.edit_frame2, text="Save Image", bg='#BDBFBF',
