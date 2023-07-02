@@ -204,16 +204,16 @@ class ImageViewer:
         directory_name = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
 
-        # Split the directory name into multiple lines with 32 characters per line
-        lines = [directory_name[i:i + 32] for i in range(0, len(directory_name), 32)]
+        # Split the directory name into multiple lines with 31 characters per line
+        lines = [directory_name[i:i + 31] for i in range(0, len(directory_name), 31)]
         directory_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 19 + line for line in lines[1:])
-        if len(directory_name_formatted.strip()) <= 32:
+        if len(directory_name_formatted.strip()) <= 31:
             directory_name_formatted = directory_name_formatted.strip()
 
-        # Split the file name into multiple lines with 30 characters per line
-        lines = [file_name[i:i + 30] for i in range(0, len(file_name), 30)]
+        # Split the file name into multiple lines with 28 characters per line
+        lines = [file_name[i:i + 28] for i in range(0, len(file_name), 28)]
         file_name_formatted = lines[0] + '\n' + '\n'.join(' ' * 20 + line for line in lines[1:])
-        if len(file_name_formatted.strip()) <= 30:
+        if len(file_name_formatted.strip()) <= 28:
             file_name_formatted = file_name_formatted.strip()
 
         width = image_tk.width()
