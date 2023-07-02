@@ -32,10 +32,12 @@ class ImageViewer:
         self.edit_frame2.grid(row=2, column=1, rowspan=1, sticky='nsew')
 
         # Create buttons for image navigation
-        self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF')
+        self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF',
+                                  state='disable')
         self.prev_button.pack(side="left", padx=5, pady=5)
 
-        self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF')
+        self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF',
+                                  state='disable')
         self.next_button.pack(side="left", padx=5, pady=5)
 
         # Create a frame for the buttons
