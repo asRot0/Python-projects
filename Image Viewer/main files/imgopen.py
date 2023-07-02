@@ -8,7 +8,9 @@ import numpy as np
 
 class ImageViewer:
     def __init__(self, root):
+        # Initialize edit_window
         self.edit_window = None
+
         self.root = root
         self.root.title("Image Viewer")
 
