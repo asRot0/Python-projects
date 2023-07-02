@@ -8,7 +8,7 @@ import numpy as np
 
 class ImageViewer:
     def __init__(self, root):
-        self.edit_window = None
+
         self.root = root
         self.root.title("Image Viewer")
 
@@ -48,20 +48,41 @@ class ImageViewer:
         self.open_button = Button(self.buttons_frame, text="Open Image", bg='#BDBFBF')
         self.open_button.pack(side='left', padx=5, pady=5)
 
-        # Create a button to delete the current image
-        self.delete_button = Button(self.buttons_frame, text="Delete Image", bg='#BDBFBF',
-                                    state="disabled")
-        self.delete_button.pack(side='left', padx=5, pady=5)
-
         # Create a button to apply edits to the current image
         self.apply_button = Button(self.buttons_frame, text="Apply Edits", bg='#BDBFBF',
                                    state="disabled")
         self.apply_button.pack(side='left', padx=5, pady=5)
 
+        # Create a button to delete the current image
+        self.delete_button = Button(self.buttons_frame, text="Delete Image", bg='#BDBFBF',
+                                    state="disabled")
+        self.delete_button.pack(side='left', padx=5, pady=5)
+
         # Create a label for image info
         self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left',
                                       width=34, anchor='w')
         self.image_info_label.pack(side='bottom', padx=5, pady=5)
+
+        # Create a scale for adjusting brightness
+        self.brightness_label = Label(self.edit_frame, text="Brightness", bg='#CFCFCF')
+        self.brightness_label.pack(side='top', padx=5, pady=2, anchor='w')
+        self.brightness_scale = Scale(self.edit_frame, from_=0, to=50, orient=HORIZONTAL,
+                                      length=200, bg='#CFCFCF')
+        self.brightness_scale.pack(side='top', padx=5, pady=2, anchor='w')
+
+        # Create a scale for adjusting contrast
+        self.contrast_label = Label(self.edit_frame, text="Contrast", bg='#CFCFCF')
+        self.contrast_label.pack(side='top', padx=5, pady=2, anchor='w')
+        self.contrast_scale = Scale(self.edit_frame, from_=0, to=1, resolution=0.05, orient=HORIZONTAL,
+                                    length=200, bg='#CFCFCF')
+        self.contrast_scale.pack(side='top', padx=5, pady=2, anchor='w')
+
+        # Create a scale for adjusting saturation
+        self.saturation_label = Label(self.edit_frame, text="Saturation", bg='#CFCFCF')
+        self.saturation_label.pack(side='top', padx=5, pady=2, anchor='w')
+        self.saturation_scale = Scale(self.edit_frame, from_=-10, to=10, orient=HORIZONTAL,
+                                      length=200, bg='#CFCFCF')
+        self.saturation_scale.pack(side='top', padx=5, pady=2, anchor='w')
 
         # Create a button to save the current image
         self.save_image_button = Button(self.edit_frame2, text="Save Image", bg='#BDBFBF',
@@ -162,9 +183,6 @@ class ImageViewer:
             self.save_image_button.config(state="normal")
             self.delete_button.config(state="normal")
 
-            # Destroy the edit window
-            self.destroy_edit_window()
-
     def load_previous_image(self):
         if self.image_index > 0:
             self.image_index -= 1
@@ -227,50 +245,10 @@ class ImageViewer:
         # file_info += f"File: {file_path}"
         self.image_info_label.config(text=file_info, justify='left')
 
-    def destroy_edit_window(self):
-        if self.edit_window:
-            self.edit_window.destroy()
-            self.edit_window = None
-
-    def apply_edits(self):
-        if self.images:
-            # Get the current image file path and Tkinter PhotoImage
-            file_path, image_tk = self.images[self.image_index]
-
-            # Destroy any existing edit window
-            self.destroy_edit_window()
-
-            # Create a new Toplevel window for editing
-            self.edit_window = Toplevel(self.root)
-            self.edit_window.title("Image Editor")
-
-            # Create Scale widgets to adjust the editing parameters
-            brightness_label = Label(self.edit_window, text="Brightness")
-            brightness_label.grid(row=0, column=0, padx=5, pady=(15, 0), sticky="w")
-
-            brightness_scale = Scale(self.edit_window, from_=0, to=255, orient=HORIZONTAL, length=150)
-            brightness_scale.grid(row=0, column=1, padx=2, pady=1, sticky="w")
-
-            contrast_label = Label(self.edit_window, text="Contrast")
-            contrast_label.grid(row=1, column=0, padx=5, pady=(15, 0), sticky="w")
-
-            contrast_scale = Scale(self.edit_window, from_=0, to=2, resolution=0.1, orient=HORIZONTAL, length=150)
-            contrast_scale.grid(row=1, column=1, padx=2, pady=1, sticky="w")
-
-            # Add an Apply button to perform the image edits
-            apply_button = Button(self.edit_window, text="Apply",
-                                  command=lambda: self.apply_edits_params(file_path, image_tk,
-                                                                          brightness_scale.get(),
-                                                                          contrast_scale.get()))
-            apply_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
-
-            # Close the edit window when the main window is closed
-            self.edit_window.protocol("WM_DELETE_WINDOW", self.destroy_edit_window)
-
-    def apply_edits_params(self, file_path, image_tk, brightness, contrast):
+    def update_image(self):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
-            # file_path, _ = self.images[self.image_index]
+            file_path, image_tk = self.images[self.image_index]
 
             # Convert Tkinter image back to Pillow image
             edited_image = ImageTk.getimage(image_tk)
@@ -278,9 +256,17 @@ class ImageViewer:
             # Convert the edited image to a NumPy array
             edited_image_np = np.array(edited_image)
 
-            # Apply brightness and contrast adjustments using OpenCV
+            # Get the current values of brightness, contrast, and saturation scales
+            brightness = self.brightness_scale.get()
+            contrast = self.contrast_scale.get()
+            saturation = self.saturation_scale.get()
+
+            # Apply brightness, contrast, and saturation adjustments using OpenCV
             edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
             edited_image_np = cv2.convertScaleAbs(edited_image_np, alpha=contrast, beta=brightness)
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_RGB2HSV)  # Convert RGB to HSV
+            edited_image_np[:, :, 1] = np.clip(edited_image_np[:, :, 1] + saturation, 0, 255)  # Adjust saturation
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_HSV2RGB)  # Convert HSV to RGB
 
             # Convert the edited image back to PIL format
             edited_image_pil = Image.fromarray(edited_image_np)
@@ -336,7 +322,7 @@ image_viewer.open_button.config(command=image_viewer.open_image)
 image_viewer.prev_button.config(command=image_viewer.load_previous_image)
 image_viewer.next_button.config(command=image_viewer.load_next_image)
 image_viewer.delete_button.config(command=image_viewer.delete_image)
-image_viewer.apply_button.config(command=image_viewer.apply_edits)
+image_viewer.apply_button.config(command=image_viewer.update_image)
 image_viewer.save_image_button.config(command=image_viewer.save_image)
 
 # Start the Tkinter event loop
