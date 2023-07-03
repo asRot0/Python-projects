@@ -66,21 +66,21 @@ class ImageViewer:
         # Create a scale for adjusting brightness
         self.brightness_label = Label(self.edit_frame, text="Brightness", bg='#CFCFCF')
         self.brightness_label.pack(side='top', padx=5, pady=2, anchor='w')
-        self.brightness_scale = Scale(self.edit_frame, from_=0, to=50, orient=HORIZONTAL,
+        self.brightness_scale = Scale(self.edit_frame, from_=0, to=255, orient=HORIZONTAL,
                                       length=200, bg='#CFCFCF')
         self.brightness_scale.pack(side='top', padx=5, pady=2, anchor='w')
 
         # Create a scale for adjusting contrast
         self.contrast_label = Label(self.edit_frame, text="Contrast", bg='#CFCFCF')
         self.contrast_label.pack(side='top', padx=5, pady=2, anchor='w')
-        self.contrast_scale = Scale(self.edit_frame, from_=0, to=1, resolution=0.05, orient=HORIZONTAL,
+        self.contrast_scale = Scale(self.edit_frame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL,
                                     length=200, bg='#CFCFCF')
         self.contrast_scale.pack(side='top', padx=5, pady=2, anchor='w')
 
         # Create a scale for adjusting saturation
         self.saturation_label = Label(self.edit_frame, text="Saturation", bg='#CFCFCF')
         self.saturation_label.pack(side='top', padx=5, pady=2, anchor='w')
-        self.saturation_scale = Scale(self.edit_frame, from_=-10, to=10, orient=HORIZONTAL,
+        self.saturation_scale = Scale(self.edit_frame, from_=-100, to=100, orient=HORIZONTAL,
                                       length=200, bg='#CFCFCF')
         self.saturation_scale.pack(side='top', padx=5, pady=2, anchor='w')
 
@@ -98,6 +98,11 @@ class ImageViewer:
                                                  command=self.toggle_resizable,
                                                  bg='#CFCFCF', font=font.Font(size=8))
         self.resizable_checkbutton.pack(side='left', padx=5, pady=5)
+
+        # Bind scale change events
+        self.brightness_scale.configure(command=self.update_image)
+        self.contrast_scale.configure(command=self.update_image)
+        self.saturation_scale.configure(command=self.update_image)
 
         # Initialize variables
         self.images = []
@@ -245,7 +250,7 @@ class ImageViewer:
         # file_info += f"File: {file_path}"
         self.image_info_label.config(text=file_info, justify='left')
 
-    def update_image(self):
+    def update_image(self, *args):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
@@ -279,7 +284,7 @@ class ImageViewer:
             self.image_label.image = edited_image_tk
 
             # Update the image in the images list
-            self.images[self.image_index] = (file_path, edited_image_tk)
+            # self.images[self.image_index] = (file_path, edited_image_tk)
 
     def save_image(self):
         if self.images:
