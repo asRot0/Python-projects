@@ -105,6 +105,7 @@ class ImageViewer:
         # Initialize variables
         self.images = []
         self.image_index = 0
+        self.edited_image_tk = None
 
     def toggle_resizable(self):
         resizable = self.resizable_var.get()
@@ -164,6 +165,9 @@ class ImageViewer:
 
     def load_image(self):
         if self.images and self.image_index < len(self.images):
+            # Initialize variables
+            self.edited_image_tk = None
+
             # Get the current image file and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
 
@@ -281,11 +285,25 @@ class ImageViewer:
             self.image_label.configure(image=edited_image_tk)
             self.image_label.image = edited_image_tk
 
+            # Assign the edited_image_tk to the instance variable
+            self.edited_image_tk = edited_image_tk
+
             # Update the image in the images list
             # self.images[self.image_index] = (file_path, edited_image_tk)
 
     def save_image(self):
-        if self.images:
+        if self.edited_image_tk:
+            # Convert Tkinter image back to Pillow image
+            pil_image = ImageTk.getimage(self.edited_image_tk)
+
+            # Open the file dialog to select a save location
+            save_path = filedialog.asksaveasfilename(defaultextension=".png")
+
+            if save_path:
+                # Save the image
+                pil_image.save(save_path)
+
+        elif self.images:
             # Get the current image file path
             _, edited_img = self.images[self.image_index]
 
