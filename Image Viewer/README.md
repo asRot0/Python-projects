@@ -54,4 +54,3 @@ Run the script `image_viewer.py` to start the application:
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
-
