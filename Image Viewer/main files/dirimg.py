@@ -17,7 +17,6 @@ class ImageViewer:
         style = Style()
         style.theme_use('clam')
         style.configure('TCombobox', fieldbackground='#BDBFBF', background='#CFCFCF')
-        style.map('TCombobox', fieldbackground=[('readonly', 'red')])
 
         # Create a frame to hold the next and previous button
         self.image_button_frame = Frame(self.root, bg='#CFCFCF')

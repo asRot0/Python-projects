@@ -17,7 +17,7 @@ class ImageViewer:
         style = Style()
         style.theme_use('clam')
         style.configure('TCombobox', fieldbackground='#BDBFBF', background='#CFCFCF')
-        style.map('TCombobox', fieldbackground=[('readonly', 'red')])
+        style.map('TCombobox', fieldbackground=[('readonly', '#BDBFBF')])
 
         # Create a frame to hold the next and previous button
         self.image_button_frame = Frame(self.root, bg='#CFCFCF')
@@ -61,7 +61,7 @@ class ImageViewer:
         self.delete_button.pack(side='left', padx=5, pady=5)
 
         # Create a combobox for edits to the current image
-        self.slt_box = Combobox(self.buttons_frame, width=8)
+        self.slt_box = Combobox(self.buttons_frame, width=8, state='readonly')
         self.slt_box['values'] = ('bgr', 'gray', 'rgb', 'canny', 'pancil', 'luv', 'xyz', 'yuv')
         self.slt_box.current(0)  # Set the initial value to the first option
         self.slt_box.pack(side='left', padx=5, pady=5)
@@ -178,6 +178,9 @@ class ImageViewer:
         if self.images and self.image_index < len(self.images):
             # Initialize variables
             self.edited_image_tk = None
+
+            # Set the initial value to the first option
+            self.slt_box.current(0)
 
             # Get the current image file and Tkinter PhotoImage
             file_path, image_tk = self.images[self.image_index]
