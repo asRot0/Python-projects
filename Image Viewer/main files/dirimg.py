@@ -1,6 +1,7 @@
 import os
 from tkinter import Tk, Frame, Label, Button, filedialog, Scale, HORIZONTAL, \
     Checkbutton, BooleanVar, font
+from tkinter.ttk import Combobox, Style
 from PIL import ImageTk, Image
 import cv2
 import numpy as np
@@ -11,6 +12,12 @@ class ImageViewer:
 
         self.root = root
         self.root.title("Image Viewer")
+
+        # Create a style and configure the background color
+        style = Style()
+        style.theme_use('clam')
+        style.configure('TCombobox', fieldbackground='#BDBFBF', background='#CFCFCF')
+        style.map('TCombobox', fieldbackground=[('readonly', 'red')])
 
         # Create a frame to hold the next and previous button
         self.image_button_frame = Frame(self.root, bg='#CFCFCF')
@@ -32,10 +39,12 @@ class ImageViewer:
         self.edit_frame2.grid(row=2, column=1, rowspan=1, sticky='nsew')
 
         # Create buttons for image navigation
-        self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF')
+        self.prev_button = Button(self.image_button_frame, text="Previous", width=40, bg='#BDBFBF',
+                                  state='disable')
         self.prev_button.pack(side="left", padx=5, pady=5)
 
-        self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF')
+        self.next_button = Button(self.image_button_frame, text="Next", width=40, bg='#BDBFBF',
+                                  state='disable')
         self.next_button.pack(side="left", padx=5, pady=5)
 
         # Create a frame for the buttons
@@ -51,10 +60,12 @@ class ImageViewer:
                                     state="disabled")
         self.delete_button.pack(side='left', padx=5, pady=5)
 
-        # Create a button to apply edits to the current image
-        self.apply_button = Button(self.buttons_frame, text="Apply Edits", bg='#BDBFBF',
-                                   state="disabled")
-        self.apply_button.pack(side='left', padx=5, pady=5)
+        # Create a combobox for edits to the current image
+        self.slt_box = Combobox(self.buttons_frame, width=8)
+        self.slt_box['values'] = ('bgr', 'gray', 'rgb', 'canny', 'pancil', 'luv', 'xyz', 'yuv')
+        self.slt_box.current(0)  # Set the initial value to the first option
+        self.slt_box.pack(side='left', padx=5, pady=5)
+        self.slt_box.bind('<<ComboboxSelected>>', self.convert_img)
 
         # Create a label for image info
         self.image_info_label = Label(self.edit_frame, text="INFO", bg='#BDBFBF', justify='left',
@@ -71,7 +82,7 @@ class ImageViewer:
         # Create a scale for adjusting contrast
         self.contrast_label = Label(self.edit_frame, text="Contrast", bg='#CFCFCF')
         self.contrast_label.pack(side='top', padx=5, pady=2, anchor='w')
-        self.contrast_scale = Scale(self.edit_frame, from_=0, to=2, resolution=0.1, orient=HORIZONTAL,
+        self.contrast_scale = Scale(self.edit_frame, from_=0, to=1, resolution=0.05, orient=HORIZONTAL,
                                     length=200, bg='#CFCFCF')
         self.contrast_scale.pack(side='top', padx=5, pady=2, anchor='w')
 
@@ -185,8 +196,7 @@ class ImageViewer:
             self.prev_button.config(state="normal" if self.image_index > 0 else "disabled")
             self.next_button.config(state="normal" if self.image_index < len(self.images) - 1 else "disabled")
 
-            # Enable the edit save and delete buttons
-            self.apply_button.config(state="normal")
+            # Enable the save and delete buttons
             self.save_image_button.config(state="normal")
             self.delete_button.config(state="normal")
 
@@ -255,7 +265,7 @@ class ImageViewer:
     def update_image(self, *args):
         if self.images:
             # Retrieve the file path and Tkinter PhotoImage
-            file_path, image_tk = self.images[self.image_index]
+            _, image_tk = self.images[self.image_index]
 
             # Convert Tkinter image back to Pillow image
             edited_image = ImageTk.getimage(image_tk)
@@ -290,6 +300,53 @@ class ImageViewer:
 
             # Update the image in the images list
             # self.images[self.image_index] = (file_path, edited_image_tk)
+
+    def convert_img(self, event=None):
+        # Retrieve the file path and Tkinter PhotoImage
+        _, image_tk = self.images[self.image_index]
+
+        # Convert Tkinter image back to Pillow image
+        edited_image = ImageTk.getimage(image_tk)
+
+        # Convert the edited image to a NumPy array
+        edited_image_np = np.array(edited_image)
+        aa = self.slt_box.get()
+
+        if aa == 'gray':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2GRAY)
+        elif aa == 'rgb':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2RGB)
+        elif aa == 'canny':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2GRAY)
+            edited_image_np = cv2.Canny(edited_image_np, 50, 100)
+        elif aa == 'pancil':
+            def dodge(x, y):
+                img = cv2.divide(x, 255 - y, scale=256)
+                return img
+
+            image_gray = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2GRAY)
+            invert = cv2.bitwise_not(image_gray)
+            blur = cv2.GaussianBlur(invert, (31, 31), sigmaX=0, sigmaY=0)
+            edited_image_np = dodge(image_gray, blur)
+        elif aa == 'luv':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2LUV)
+        elif aa == 'xyz':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2XYZ)
+        elif aa == 'yuv':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2YUV)
+
+        # Convert the edited image NumPy array back to Pillow image
+        edited_image_pil = Image.fromarray(edited_image_np)
+
+        # Convert the Pillow image to Tkinter PhotoImage
+        edited_image_tk = ImageTk.PhotoImage(edited_image_pil)
+
+        # Update the image label in the main window
+        self.image_label.configure(image=edited_image_tk)
+        self.image_label.image = edited_image_tk
+
+        # Assign the edited_image_tk to the instance variable
+        self.edited_image_tk = edited_image_tk
 
     def save_image(self):
         if self.edited_image_tk:
@@ -343,7 +400,6 @@ image_viewer.open_button.config(command=image_viewer.open_image)
 image_viewer.prev_button.config(command=image_viewer.load_previous_image)
 image_viewer.next_button.config(command=image_viewer.load_next_image)
 image_viewer.delete_button.config(command=image_viewer.delete_image)
-image_viewer.apply_button.config(command=image_viewer.update_image)
 image_viewer.save_image_button.config(command=image_viewer.save_image)
 
 # Start the Tkinter event loop
