@@ -62,7 +62,7 @@ class ImageViewer:
 
         # Create a combobox for edits to the current image
         self.slt_box = Combobox(self.buttons_frame, width=8, state='readonly')
-        self.slt_box['values'] = ('bgr', 'gray', 'rgb', 'canny', 'pancil', 'luv', 'xyz', 'yuv')
+        self.slt_box['values'] = ('bgr', 'gray', 'rgb', 'canny', 'pancil', 'hsv', 'luv', 'xyz', 'yuv')
         self.slt_box.current(0)  # Set the initial value to the first option
         self.slt_box.pack(side='left', padx=5, pady=5)
         self.slt_box.bind('<<ComboboxSelected>>', self.convert_img)
@@ -331,6 +331,8 @@ class ImageViewer:
             invert = cv2.bitwise_not(image_gray)
             blur = cv2.GaussianBlur(invert, (31, 31), sigmaX=0, sigmaY=0)
             edited_image_np = dodge(image_gray, blur)
+        elif aa == 'hsv':
+            edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2HSV)
         elif aa == 'luv':
             edited_image_np = cv2.cvtColor(edited_image_np, cv2.COLOR_BGR2LUV)
         elif aa == 'xyz':
