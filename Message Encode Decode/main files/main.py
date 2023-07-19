@@ -28,14 +28,11 @@ f1.pack(side=LEFT)
 
 # function to update the time
 def update_time():
-    current_time = time.strftime("%d, %b %Y %I:%M:%S %p %A", time.localtime())
+    current_time = time.strftime("%d %b %Y %I:%M:%S %p %A", time.localtime())
     lblInfo.config(text=current_time)
     lblInfo.after(1000, update_time)  # update every 1000 milliseconds (1 second)
 
 
-# ==============================================
-#				 TIME
-# ==============================================
 localtime = time.strftime("%d, %b %Y %I:%M:%S %p %A", time.localtime())
 
 font_style = ('Georgia', 48, 'bold')
