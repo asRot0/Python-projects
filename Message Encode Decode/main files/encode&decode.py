@@ -76,6 +76,7 @@ def Reset():
     key.set("")
     mode.set("")
     txtMsg.delete('1.0', 'end')
+    txtService.config(state='normal')
     txtService.delete('1.0', 'end')
 
 
@@ -154,12 +155,13 @@ def Ref():
     print("message= ", clear)  # Retrieve the entire content of the Text widget
     k = key.get()
     m = mode.get()
+    txtService.config(state='normal')
     txtService.delete('1.0', 'end')  # Clear the Text widget
     if m == 'e':
         txtService.insert("1.0", encode(k, clear))
     else:
         txtService.insert("1.0", decode(k, clear))
-
+    txtService.config(state='disabled')
 
 # Show message button
 btnTotal = Button(f1, padx=16, pady=8, bd=16, fg="black",
