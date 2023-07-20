@@ -13,7 +13,7 @@ import base64
 root = Tk()
 
 # defining size of window
-root.geometry("1200x6000")
+root.geometry("1200x800")
 
 # setting up the title of window
 root.title("Message Encryption and Decryption")
