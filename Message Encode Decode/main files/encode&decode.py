@@ -87,7 +87,7 @@ lblMsg = Label(f1, font=('arial', 16, 'bold'),
 
 lblMsg.grid(row=0, column=0)
 
-txtMsg = Text(f1, font=('arial', 16, 'bold'), wrap='word', width=20, height=3)
+txtMsg = Text(f1, font=('arial', 10, 'bold'), wrap='word', width=35, height=5)
 txtMsg.grid(row=0, column=1)
 
 lblkey = Label(f1, font=('arial', 16, 'bold'),
@@ -118,7 +118,7 @@ lblService = Label(f1, font=('arial', 16, 'bold'),
 
 lblService.grid(row=1, column=2)
 
-txtService = Text(f1, font=('arial', 16, 'bold'), wrap='word', width=20, height=7,
+txtService = Text(f1, font=('arial', 10, 'bold'), wrap='word', width=35, height=10,
                   state='disabled')
 
 txtService.grid(row=0, column=3, rowspan=3)
@@ -162,6 +162,7 @@ def Ref():
     else:
         txtService.insert("1.0", decode(k, clear))
     txtService.config(state='disabled')
+
 
 # Show message button
 btnTotal = Button(f1, padx=16, pady=8, bd=16, fg="black",
