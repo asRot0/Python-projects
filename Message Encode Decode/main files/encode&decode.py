@@ -75,53 +75,71 @@ def Reset():
     Msg.set("")
     key.set("")
     mode.set("")
+    copy.config(text='copy', state='disabled')
     txtMsg.delete('1.0', 'end')
     txtService.config(state='normal')
     txtService.delete('1.0', 'end')
+    txtService.config(state='disabled')
 
+
+def copy_text():
+    print('get')
+    copy.config(text='pasted', state='disabled')
+    copytxt = txtService.get('1.0', 'end-1c')  # Retrieve the entire content of the Text widget
+
+    txtService.config(state='normal')
+    txtService.delete('1.0', 'end')
+    txtService.config(state='disabled')
+
+    txtMsg.delete('1.0', 'end')
+    txtMsg.insert('1.0', copytxt)
 
 # labels
 
 lblMsg = Label(f1, font=('arial', 16, 'bold'),
                text="MESSAGE", bd=16, anchor="w")
 
-lblMsg.grid(row=0, column=0)
+lblMsg.grid(row=1, column=0)
 
 txtMsg = Text(f1, font=('arial', 10, 'bold'), wrap='word', width=35, height=5)
-txtMsg.grid(row=0, column=1)
+txtMsg.grid(row=1, column=1)
 
 lblkey = Label(f1, font=('arial', 16, 'bold'),
                text="KEY", bd=16, anchor="w")
 
-lblkey.grid(row=1, column=0)
+lblkey.grid(row=2, column=0)
 
 txtkey = Entry(f1, font=('arial', 16, 'bold'),
                textvariable=key, bd=10, insertwidth=4,
                bg="powder blue", justify='right')
 
-txtkey.grid(row=1, column=1)
+txtkey.grid(row=2, column=1)
 
 lblmode = Label(f1, font=('arial', 16, 'bold'),
                 text="MODE(e for encrypt, d for decrypt)",
                 bd=16, anchor="w")
 
-lblmode.grid(row=2, column=0)
+lblmode.grid(row=3, column=0)
 
 txtmode = Entry(f1, font=('arial', 16, 'bold'),
                 textvariable=mode, bd=10, insertwidth=4,
                 bg="powder blue", justify='right')
 
-txtmode.grid(row=2, column=1)
+txtmode.grid(row=3, column=1)
+
+copy = Button(f1, font=('arial', 14),
+              text='copy', bd=0, command=copy_text, state='disabled')
+copy.grid(row=0, column=3, sticky='e')
 
 lblService = Label(f1, font=('arial', 16, 'bold'),
                    text="The Result-", bd=16, anchor="w")
 
-lblService.grid(row=1, column=2)
+lblService.grid(row=2, column=2)
 
 txtService = Text(f1, font=('arial', 10, 'bold'), wrap='word', width=35, height=10,
                   state='disabled')
 
-txtService.grid(row=0, column=3, rowspan=3)
+txtService.grid(row=1, column=3, rowspan=3)
 
 
 # Function to encode
@@ -162,6 +180,7 @@ def Ref():
     else:
         txtService.insert("1.0", decode(k, clear))
     txtService.config(state='disabled')
+    copy.config(text='copy', state='normal')
 
 
 # Show message button
