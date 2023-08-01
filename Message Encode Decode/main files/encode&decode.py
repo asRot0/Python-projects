@@ -94,8 +94,8 @@ def copy_text():
     txtMsg.delete('1.0', 'end')
     txtMsg.insert('1.0', copytxt)
 
-# labels
 
+# labels
 lblMsg = Label(f1, font=('arial', 16, 'bold'),
                text="MESSAGE", bd=16, anchor="w")
 
@@ -110,7 +110,7 @@ lblkey = Label(f1, font=('arial', 16, 'bold'),
 lblkey.grid(row=2, column=0)
 
 txtkey = Entry(f1, font=('arial', 16, 'bold'),
-               textvariable=key, bd=10, insertwidth=4,
+               textvariable=key, bd=0, insertwidth=4, width=21,
                bg="powder blue", justify='right')
 
 txtkey.grid(row=2, column=1)
@@ -121,11 +121,17 @@ lblmode = Label(f1, font=('arial', 16, 'bold'),
 
 lblmode.grid(row=3, column=0)
 
-txtmode = Entry(f1, font=('arial', 16, 'bold'),
-                textvariable=mode, bd=10, insertwidth=4,
-                bg="powder blue", justify='right')
+# Add RadioButtons for mode selection
+mode_var = StringVar()  # Create a StringVar to store the selected mode
+mode_var.set("e")  # Set the default mode to "e" (encrypt)
 
-txtmode.grid(row=3, column=1)
+encrypt_radio = Radiobutton(f1, font=('arial', 10, 'bold'), text="Encrypt",
+                            variable=mode_var, value="e")
+encrypt_radio.grid(row=3, column=1)
+
+decrypt_radio = Radiobutton(f1, font=('arial', 10, 'bold'), text="Decrypt",
+                            variable=mode_var, value="d")
+decrypt_radio.grid(row=3, column=1, columnspan=2)
 
 copy = Button(f1, font=('arial', 14),
               text='copy', bd=0, command=copy_text, state='disabled')
