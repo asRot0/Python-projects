@@ -60,11 +60,6 @@ lblInfo.grid(row=2, column=0)
 # update the time initially
 update_time()
 
-Msg = StringVar()
-key = StringVar()
-mode = StringVar()
-
-
 # exit function
 def qExit():
     root.destroy()
@@ -72,9 +67,8 @@ def qExit():
 
 # Function to reset the window
 def Reset():
-    Msg.set("")
     key.set("")
-    mode.set("")
+    mode_var.set("e")
     copy.config(text='copy', state='disabled')
     txtMsg.delete('1.0', 'end')
     txtService.config(state='normal')
@@ -108,6 +102,8 @@ lblkey = Label(f1, font=('arial', 16, 'bold'),
                text="KEY", bd=16, anchor="w")
 
 lblkey.grid(row=2, column=0)
+
+key = StringVar()  # Create a StringVar to store the key value
 
 txtkey = Entry(f1, font=('arial', 16, 'bold'),
                textvariable=key, bd=0, insertwidth=4, width=21,
@@ -178,7 +174,7 @@ def Ref():
     clear = txtMsg.get("1.0", "end-1c")  # Retrieve the entire content of the Text widget
     print("message= ", clear)  # Retrieve the entire content of the Text widget
     k = key.get()
-    m = mode.get()
+    m = mode_var.get()
     txtService.config(state='normal')
     txtService.delete('1.0', 'end')  # Clear the Text widget
     if m == 'e':
