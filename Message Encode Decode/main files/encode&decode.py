@@ -15,6 +15,7 @@ root = Tk()
 # defining size of window
 root.geometry("1200x800")
 root.config(bg='#E7F7F7')
+
 # setting up the title of window
 root.title("Message Encryption and Decryption")
 
