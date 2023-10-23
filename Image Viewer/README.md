@@ -68,7 +68,7 @@ Run the script `image_viewer.py` to start the application:
 
 ## Screenshot
 
-![Image Viewer](pic/screenshot_1.png)
+![Image Viewer](pic/screenshot.png)
 
 ## License
 
