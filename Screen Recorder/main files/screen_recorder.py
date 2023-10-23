@@ -6,6 +6,7 @@ from video_capture import capture_and_display_frames
 class ScreenRecorderApp:
     def __init__(self, root):
         self.root = root
+        self.root.iconbitmap('../pics/line.ico')
         self.root.attributes("-alpha", 0.9)
         self.root.title("Screen Recorder")
         self.root.config(bg="#f5f5f5")
