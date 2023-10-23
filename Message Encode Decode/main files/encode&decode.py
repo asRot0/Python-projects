@@ -11,9 +11,10 @@ import base64
 
 # creating root object
 root = Tk()
+root.iconbitmap('../pic/line.ico')
 
 # defining size of window
-root.geometry("1200x800")
+root.geometry("1100x600")
 root.config(bg='#E7F7F7')
 
 # setting up the title of window
