@@ -390,7 +390,7 @@ window.geometry('1040x520')
 window.resizable(False, False)
 window.config(bg='#9B9C9C')
 
-window.iconbitmap('../pic/img.ico')
+window.iconbitmap('../pic/line.ico')
 
 # Configure grid row and column weights
 window.grid_rowconfigure(0, weight=0)
