@@ -63,7 +63,7 @@ Contributions are welcome! Feel free to open issues and pull requests to enhance
 
 ## Screenshot
 
-![Screen Recorder](pics/screenshot_1.png)
+![Screen Recorder](pics/screenshot.png)
 
 ## Acknowledgments
 - This project was inspired by the need for a simple screen recording tool.
