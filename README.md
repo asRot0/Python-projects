@@ -8,7 +8,7 @@ This repository contains a collection of various Python projects I've created, s
 - [Screen Recorder](https://github.com/asif7707/Python-projects/tree/main/Screen%20Recorder)
 - [Image Viewer](https://github.com/asif7707/Python-projects/tree/main/Image%20Viewer)
 - [Message Encode Decode](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)
-## ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+## |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 ## Screen Recorder
