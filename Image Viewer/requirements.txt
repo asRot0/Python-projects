@@ -2,10 +2,3 @@ numpy==1.19.5
 matplotlib==3.4.2
 Pillow==8.2.0
 opencv-python==4.5.3
-
-## To install the required libraries
-
-pip install numpy==1.19.5
-pip install matplotlib==3.4.2
-pip install Pillow==8.2.0
-pip install opencv-python==4.5.3
