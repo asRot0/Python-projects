@@ -65,6 +65,11 @@ Run the script `image_viewer.py` to start the application:
 6. Use the "Delete Image" button to remove the current image from the list.
 7. Toggle the "Resizable" checkbox to enable/disable window resizing.
 ```
+
+## Screenshot
+
+![Image Viewer](pic/screenshot_1.png)
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
