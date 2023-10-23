@@ -68,6 +68,11 @@ Run the script `encode&decode.py` to start the application:
 8. Click the "Exit" button to close the application.
 ```
 
+## Screenshot
+
+![Image Viewer](pic/screenshot.png)
+
+
 ## Note
 
 This application is for educational purposes and is not intended for secure encryption. It uses a simple encryption algorithm and should not be used for sensitive or critical information.
