@@ -48,7 +48,7 @@ This repository contains a collection of various Python projects I've created, s
     - Message encoding and decoding.
     - Multiple encoding techniques.
 
-## ___________________________________________________
+## _________________________________________________________________________
 ## Installation and Usage
 Each project folder contains a README.md file with specific instructions on how to install and run the project. Generally, the steps involve:
 
