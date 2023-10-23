@@ -70,5 +70,5 @@ Enjoy recording your screen with the Screen Recorder application!
 
 ```vbnet
 You can create a `README.md` file in your project's root directory, paste the above content,
- and modify it as needed.
+and modify it as needed.
 ```
