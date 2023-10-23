@@ -2,48 +2,53 @@
 
 This repository contains a collection of various Python projects I've created, showcasing my programming skills and exploring different areas of application development.
 
-#### Project Overview
 
-<div class="project-box">
+## Table of Contents |||||||||||||||||||||||||||||||||||||||
 
-<h3 class="project-title">Project 1: Screen Recorder</h3>
-
-<p class="project-description">A simple screen recording application built with Tkinter and OpenCV that allows users to capture their screen activity and save it as a video file.</p>
-
-</div>
-
-<style>
-.project-box {
-    background-color: #222222;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.project-title {
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.project-description {
-    color: #ffffff;
-}
-</style>
+- [Screen Recorder](https://github.com/asif7707/Python-projects/tree/main/Screen%20Recorder)
+- [Image Viewer](https://github.com/asif7707/Python-projects/tree/main/Image%20Viewer)
+- [Message Encode Decode](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)
+## ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
+## Screen Recorder
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Screen%20Recorder)**
 
-- Project 1: Screen Recorder
-    A simple screen recording application built with Tkinter and OpenCV that allows users to capture
-    their screen activity and save it as a video file.
+    A Python application that allows you to record your screen and save the recordings in video format. 
+    It provides a simple graphical user interface to control the recording process, including options to 
+    select screen resolution and frame rate. The recorded video is saved as an AVI file, and you can 
+    start and stop recording at your convenience.
+
+    This project makes use of libraries like OpenCV and tkinter for capturing the screen and creating 
+    a graphical user interface, providing a straightforward tool for screen recording.
 
 
-- Project 2: [Project Name]
+## Image Viewer
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Image%20Viewer)**
 
-[Project description]
+    An intuitive Python application designed for viewing and editing image files effortlessly. 
+    The project offers a user-friendly graphical interface that allows users to efficiently navigate 
+    and display images. In addition to viewing, it provides essential image editing features, making 
+    it a versatile tool for managing and enhancing your image collection.
+        
+    - User-friendly interface.
+    - Efficient image file navigation.
+    - Seamless image viewing.
+    - Image editing capabilities for enhancing your pictures.
+    
 
-- Project 3: [Project Name]
 
-[Project description]
+## Message Encode Decode
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)**
 
+    A Python project that provides tools to encode and decode messages using various techniques, adding 
+    a layer of security to your communication. This project includes a user-friendly interface for 
+    easy message input and output.
+    
+    - Message encoding and decoding.
+    - Multiple encoding techniques.
+
+## ___________________________________________________
 ## Installation and Usage
 Each project folder contains a README.md file with specific instructions on how to install and run the project. Generally, the steps involve:
 
