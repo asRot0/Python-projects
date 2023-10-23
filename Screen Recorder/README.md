@@ -61,6 +61,10 @@ You can customize the application by modifying the following files:
 ## Contributing
 Contributions are welcome! Feel free to open issues and pull requests to enhance this Screen Recorder tool.
 
+## Screenshot
+
+![Screen Recorder](pics/screenshot_1.png)
+
 ## Acknowledgments
 - This project was inspired by the need for a simple screen recording tool.
 - Thanks to the open-source community for the libraries and tools used in this project.
