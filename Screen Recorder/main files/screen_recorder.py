@@ -17,12 +17,11 @@ class ScreenRecorderApp:
         self.filename = "Recording.avi"
         self.codec = cv2.VideoWriter_fourcc(*"XVID")
         self.recording_thread = None  # To hold the recording thread
+        self.out = None
 
         # Create GUI elements
         self.control_frame = create_control_frame(self.root, self)
         self.live_canvas = create_live_video_canvas(self.root)
-
-        self.recording_thread = None
 
     def start_recording(self):
         self.recording = True
@@ -35,7 +34,6 @@ class ScreenRecorderApp:
         # Stop the recording
         self.recording = False
         self.out.release()
-
 
     def toggle_recording(self):
         # Toggle the recording state when the button is pressed
