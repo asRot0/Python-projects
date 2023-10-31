@@ -1,7 +1,8 @@
 import customtkinter as ctk
-from button import Button, ImageButton
+from button import Button, ImageButton, NumButton, MathButton, MathImageButton
 import settings
 from PIL import Image
+
 
 class Calculator(ctk.CTk):
     def __init__(self):
@@ -22,7 +23,7 @@ class Calculator(ctk.CTk):
 
         # data
         self.result_string = ctk.StringVar(value='0')
-        self.formula_string = ctk.StringVar(value='')
+        self.formula_string = ctk.StringVar(value='dfgd')
 
         # widgets
         self.create_widgets()
@@ -51,13 +52,38 @@ class Calculator(ctk.CTk):
 
         # invert button
         invert_image = ctk.CTkImage(dark_image=Image.open(settings.OPERATORS['invert']['image path']))
-        ImageButton(parent, text, func,  col, row, image)
+        ImageButton(parent=self, func=self.invert, col=settings.OPERATORS['invert']['col'],
+                    row=settings.OPERATORS['invert']['row'], image=invert_image, color='light-gray')
+
+        # number buttons
+        for num, data in settings.NUM_POSITIONS.items():
+            NumButton(parent=self, text=num, func=self.num_press,
+                      col=data['col'], row=data['row'], font=main_font)
+
+        # math buttons
+        for operator, data, in settings.MATH_POSITIONS.items():
+            if data['image path']:
+                image_button = ctk.CTkImage(dark_image=Image.open(data['image path']))
+                MathImageButton(parent=self, operator=operator, func=self.math_press,
+                                col=data['col'], row=data['row'], image=image_button)
+            else:
+                MathButton(parent=self, text=data['character'], operator=operator,
+                           func=self.math_press,  col=data['col'], row=data['row'], font=main_font)
+
+    def num_press(self, value):
+        print(value)
+
+    def math_press(self, value):
+        print(value)
 
     def clear(self):
         print('clear')
 
     def percent(self):
         print('percent')
+
+    def invert(self):
+        print('invert')
 
 
 class OutputLabel(ctk.CTkLabel):
