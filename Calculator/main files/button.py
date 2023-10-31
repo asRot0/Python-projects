@@ -41,7 +41,7 @@ class MathButton(Button):
 
 
 class ImageButton(CTkButton):
-    def __init__(self, parent, func,  col, row, image, text='', color='dark-gray'):
+    def __init__(self, parent, func,  col, row, image, text='', color='light-gray'):
         super().__init__(
             master=parent,
             command=func,

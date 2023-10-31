@@ -35,7 +35,8 @@ MATH_POSITIONS = {
 OPERATORS = {
     'clear': {'col': 1, 'row': 2, 'text': 'C', 'image path': None},
     'invert': {'col': 0, 'row': 6, 'text': '', 'image path': '../pic/invert.png'},
-    'percent': {'col': 0, 'row': 2, 'text': '%', 'image path': None}}
+    'percent': {'col': 0, 'row': 2, 'text': '%', 'image path': None},
+    'back': {'col': 2, 'row': 2, 'text': '', 'image path': '../pic/back.png'}}
 
 COLORS = {
     'light-gray': {'fg': '#D4D4D2', 'hover': '#efefed', 'text': 'black'},

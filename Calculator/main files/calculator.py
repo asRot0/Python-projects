@@ -53,7 +53,13 @@ class Calculator(ctk.CTk):
         # invert button
         invert_image = ctk.CTkImage(dark_image=Image.open(settings.OPERATORS['invert']['image path']))
         ImageButton(parent=self, func=self.invert, col=settings.OPERATORS['invert']['col'],
-                    row=settings.OPERATORS['invert']['row'], image=invert_image, color='light-gray')
+                    row=settings.OPERATORS['invert']['row'], image=invert_image)
+
+        # back button
+        back_image = ctk.CTkImage(dark_image=Image.open(settings.OPERATORS['back']['image path']))
+
+        ImageButton(parent=self, func=self.back, col=settings.OPERATORS['back']['col'],
+                    row=settings.OPERATORS['back']['row'], image=back_image, color='dark-gray')
 
         # number buttons
         for num, data in settings.NUM_POSITIONS.items():
@@ -84,6 +90,9 @@ class Calculator(ctk.CTk):
 
     def invert(self):
         print('invert')
+
+    def back(self):
+        print('back')
 
 
 class OutputLabel(ctk.CTkLabel):
