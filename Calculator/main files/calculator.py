@@ -7,10 +7,11 @@ class Calculator(ctk.CTk):
         super().__init__()
 
         ctk.set_appearance_mode('dark')
-        # self.attributes('-alpha', 0.7)
+        self.attributes('-alpha', settings.alpha)
         self.geometry(f'{settings.app_size[0]}x{settings.app_size[1]}')
         self.resizable(False, False)
-
+        self.iconbitmap(settings.title_ico)
+        self.title('Calculator')
 
         self.mainloop()
 
