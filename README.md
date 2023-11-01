@@ -8,6 +8,7 @@ This repository contains a collection of various Python projects I've created, s
 - [Screen Recorder](https://github.com/asif7707/Python-projects/tree/main/Screen%20Recorder)
 - [Image Viewer](https://github.com/asif7707/Python-projects/tree/main/Image%20Viewer)
 - [Message Encode Decode](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)
+- [Calculator](https://github.com/asif7707/Python-projects/tree/main/Calculator)
 ## |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
@@ -37,7 +38,6 @@ This repository contains a collection of various Python projects I've created, s
     - Image editing capabilities for enhancing your pictures.
     
 
-
 ## Message Encode Decode
 **Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)**
 
@@ -47,6 +47,26 @@ This repository contains a collection of various Python projects I've created, s
     
     - Message encoding and decoding.
     - Multiple encoding techniques.
+
+
+## Calculator
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Calculator)**
+    
+    The Calculator App is a versatile and visually appealing calculator program built with CustomTkinter.
+    It offers a sleek and user-friendly interface for performing basic and complex calculations. Features
+    include standard arithmetic operations (addition, subtraction, multiplication, and division),
+    percentage calculations, and history tracking. The app allows you to clear history, correct input 
+    errors, and offers a dark mode for comfortable usage in various environments. Whether you're a student,
+    professional, or just need a handy digital calculator, this app simplifies mathematical tasks with 
+    precision.
+    
+    - Customizable and visually appealing UI.
+    - Arithmetic operations for solving equations.
+    - Percentage and history tracking.
+    - Ability to clear the history and start fresh.
+    - Error correction with a backspace feature.
+    - Dark mode for low-light usage.
+
 
 ## ________________________________________________________________________________
 ## Installation and Usage
