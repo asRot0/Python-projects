@@ -1,12 +1,12 @@
 import customtkinter as ctk
-from button import Button, ImageButton, NumButton, MathButton, MathImageButton
+import tkinter as tk
+from button import Button, ImageButton, NumButton, MathButton, MathImageButton, DeleteButton
 import settings
 from PIL import Image
 
 
 class Calculator(ctk.CTk):
     def __init__(self):
-        # setup
         super().__init__()
 
         ctk.set_appearance_mode('dark')
@@ -24,8 +24,11 @@ class Calculator(ctk.CTk):
         # data
         self.result_string = ctk.StringVar(value='0')
         self.formula_string = ctk.StringVar(value='')
+        self.history_string = ctk.StringVar(value='There\'s no history yet')
         self.display_nums = []
         self.full_operation = []
+
+        self.flag = False
 
         # widgets
         self.create_widgets()
@@ -36,10 +39,15 @@ class Calculator(ctk.CTk):
         # fonts
         main_font = ctk.CTkFont(family=settings.FONT, size=settings.NORMAL_FONT_SIZE)
         result_font = ctk.CTkFont(family=settings.FONT, size=settings.OUTPUT_FONT_SIZE)
+        small_font = ctk.CTkFont(family=settings.FONT, size=settings.SMALL_FONT_SIZE)
 
         # output labels
         OutputLabel(self, 0, 'se', main_font, self.formula_string)
         OutputLabel(self, 1, 'e', result_font, self.result_string)
+        HistoryFrame(self, 0, 'w', main_font, small_font, self.history_string)
+
+        # history labels
+        self.history_label = HistoryLabel(self, 'nsew', small_font)
 
         # Clear (C) button
         Button(parent=self, text=settings.OPERATORS['clear']['text'], func=self.clear,
@@ -77,7 +85,19 @@ class Calculator(ctk.CTk):
                 MathButton(parent=self, text=data['character'], operator=operator,
                            func=self.math_press,  col=data['col'], row=data['row'], font=main_font)
 
+        # delete button
+        delete_image = ctk.CTkImage(dark_image=Image.open(settings.OPERATORS['delete']['image path']))
+        self.delete_button = DeleteButton(parent=self, func=self.delete,  col=settings.OPERATORS['delete']['col'],
+                                          row=settings.OPERATORS['delete']['row'], image=delete_image)
+        self.delete_button.grid_remove()
+
     def num_press(self, value):
+
+        if self.flag:
+            self.display_nums.clear()
+            self.full_operation.clear()
+            self.flag = False
+
         self.display_nums.append(str(value))
         full_number = ''.join(self.display_nums)
         self.result_string.set(full_number)
@@ -88,6 +108,9 @@ class Calculator(ctk.CTk):
             self.full_operation.append(current_number)
 
             if value != '=':
+                # update flag
+                self.flag = False
+
                 # update data
                 self.full_operation.append(value)
                 self.display_nums.clear()
@@ -101,9 +124,8 @@ class Calculator(ctk.CTk):
                 result = eval(formula)
 
                 # format the result
-                if isinstance(result, float):
-                    if result.is_integer():
-                        result = int(result)
+                if isinstance(result, float) and result.is_integer():
+                    result = int(result)
 
                 # update data
                 self.full_operation.clear()
@@ -112,6 +134,19 @@ class Calculator(ctk.CTk):
                 # update output
                 self.result_string.set(result)
                 self.formula_string.set(formula)
+
+                # update flag
+                self.flag = True
+                self.history_string.set('')
+
+                # update delete button
+                self.delete_button.grid()
+
+                # update the history section
+                self.history_label.configure(state='normal')
+                # self.history_text.delete('1.0', 'end')  # Clear previous history
+                self.history_label.insert('1.0', f'{formula} = {result}\n\n')
+                self.history_label.configure(state='disabled')
 
     def clear(self):
         # clear the output
@@ -145,16 +180,38 @@ class Calculator(ctk.CTk):
             self.result_string.set(''.join(self.display_nums))
 
     def back(self):
-        print(self.display_nums)
         del self.display_nums[-1]
-        print(self.display_nums)
         self.result_string.set(''.join(self.display_nums))
+
+    def delete(self):
+        # update the history section
+        self.history_label.configure(state='normal')
+        self.history_label.delete('1.0', 'end')  # Clear previous history
+        self.history_label.configure(state='disabled')
+
+        # update delete button
+        self.delete_button.grid_remove()
+        self.history_string.set(value='There\'s no history yet')
 
 
 class OutputLabel(ctk.CTkLabel):
     def __init__(self, parent, row, side, font, string_var):
         super().__init__(master=parent, font=font, textvariable=string_var)
         self.grid(column=0, columnspan=4, row=row, sticky=side, padx=10)
+
+
+class HistoryFrame(ctk.CTkFrame):
+    def __init__(self, parent, row, side, font1, font2, string_var):
+        super().__init__(master=parent, fg_color='transparent')
+        ctk.CTkLabel(self, text='History', font=font1).pack(padx=1, pady=5, anchor='w')
+        ctk.CTkLabel(self, textvariable=string_var, font=font2).pack(pady=1)
+        self.grid(column=4, row=row, rowspan=1, sticky=side, padx=10)
+
+
+class HistoryLabel(ctk.CTkTextbox):
+    def __init__(self, parent, side, font):
+        super().__init__(master=parent, font=font, fg_color='transparent', state='disabled', wrap='none', padx=10)
+        self.grid(column=4, row=1, rowspan=6, sticky=side, padx=0.5)
 
 
 if __name__ == '__main__':
