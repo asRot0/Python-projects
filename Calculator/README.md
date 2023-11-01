@@ -38,6 +38,20 @@ pip install customtkinter
 pip install Pillow
 ```
 
+### Installation
+
+1. Clone the repository:
+    
+    git clone https://github.com/asif7707/Python-projects.git
+    
+2. Navigate to the Image Viewer directory:
+
+    cd Python-projects/Calculator
+    
+3. Install the required dependencies:
+
+    pip install -r requirements.txt
+
 ### Running the Application
 To run the calculator, execute the `calculator.py` script. You can do this from the command line:
 ```bash
