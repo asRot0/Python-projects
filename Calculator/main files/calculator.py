@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import tkinter as tk
 from button import Button, ImageButton, NumButton, MathButton, MathImageButton, DeleteButton
 import settings
 from PIL import Image
