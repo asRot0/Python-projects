@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from image_widgets import ImageImport, ImageOutput, CloseOutput
 from menu import Menu
-from PIL import Image, ImageTk, ImageOps
+from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
 import settings
 
 
@@ -39,21 +39,78 @@ class App(ctk.CTk):
         self.mainloop()
 
     def init_parameters(self):
-        # self.rotate_int = ctk.DoubleVar(value=settings.ROTATE_DEFAULT)
-        self.rotate_int = ctk.IntVar(value=settings.ROTATE_DEFAULT)
-        self.zoom_int = ctk.IntVar(value=settings.ZOOM_DEFAULT)
+        self.pos_vars = {
+            'rotate': ctk.DoubleVar(value=settings.ROTATE_DEFAULT),
+            'zoom': ctk.DoubleVar(value=settings.ZOOM_DEFAULT),
+            'flip': ctk.StringVar(value=settings.FLIP_OPTIONS[0])
+        }
 
-        self.rotate_int.trace('w', self.manipulate_image)
-        self.zoom_int.trace('w', self.manipulate_image)
+        self.color_vars = {
+            'brightness': ctk.DoubleVar(value=settings.BRIGHTNESS_DEFAULT),
+            'grayscale': ctk.BooleanVar(value=settings.GRAYSCALE_DEFAULT),
+            'invert': ctk.BooleanVar(value=settings.INVERT_DEFAULT),
+            'vibrance': ctk.DoubleVar(value=settings.VIBRANCE_DEFAULT)
+        }
+
+        self.effect_vars = {
+            'blur': ctk.DoubleVar(value=settings.BLUR_DEFAULT),
+            'contrast': ctk.IntVar(value=settings.CONTRAST_DEFAULT),
+            'effect': ctk.StringVar(value=settings.EFFECT_OPTIONS[0])
+        }
+
+        # tracing
+        combined_vars = list(self.pos_vars.values()) + list(self.color_vars.values()) + list(self.effect_vars.values())
+        for var in combined_vars:
+            var.trace('w', self.manipulate_image)
 
     def manipulate_image(self, *args):
         self.image = self.original
 
         # rotate
-        self.image = self.image.rotate(self.rotate_int.get())
+        if self.pos_vars['rotate'].get() != settings.ROTATE_DEFAULT:
+            self.image = self.image.rotate(self.pos_vars['rotate'].get())
 
         # zoom
-        self.image = ImageOps.crop(image=self.image, border=self.zoom_int.get())
+        if self.pos_vars['zoom'].get():
+            self.image = ImageOps.crop(image=self.image, border=self.pos_vars['zoom'].get())
+
+        # flip
+        if self.pos_vars['flip'].get() != settings.FLIP_OPTIONS[0]:
+            if self.pos_vars['flip'].get() == 'X':
+                self.image = ImageOps.mirror(self.image)
+            if self.pos_vars['flip'].get() == 'Y':
+                self.image = ImageOps.flip(self.image)
+            if self.pos_vars['flip'].get() == 'Both':
+                self.image = ImageOps.mirror(self.image)
+                self.image = ImageOps.flip(self.image)
+
+        # brightness and vibrance
+        if self.color_vars['brightness'].get() != settings.BRIGHTNESS_DEFAULT:
+            brightness_enhancer = ImageEnhance.Brightness(self.image)
+            self.image = brightness_enhancer.enhance(self.color_vars['brightness'].get())
+        if self.color_vars['vibrance'].get() != settings.VIBRANCE_DEFAULT:
+            vibrance_enhancer = ImageEnhance.Color(self.image)
+            self.image = vibrance_enhancer.enhance(self.color_vars['vibrance'].get())
+
+        # grayscale and invert
+        if self.color_vars['grayscale'].get():
+            self.image = ImageOps.grayscale(self.image)
+        if self.color_vars['invert'].get():
+            self.image = ImageOps.invert(self.image)
+
+        # blur and contrast
+        if self.effect_vars['blur'].get() != settings.BLUR_DEFAULT:
+            self.image = self.image.filter(ImageFilter.GaussianBlur(self.effect_vars['blur'].get()))
+        if self.effect_vars['contrast'].get() != settings.CONTRAST_DEFAULT:
+            self.image = self.image.filter(ImageFilter.UnsharpMask(self.effect_vars['contrast'].get()))
+        if self.effect_vars['effect'].get() == 'Emboss':
+            self.image = self.image.filter(ImageFilter.EMBOSS)
+        elif self.effect_vars['effect'].get() == 'Find edges':
+            self.image = self.image.filter(ImageFilter.FIND_EDGES)
+        elif self.effect_vars['effect'].get() == 'Contour':
+            self.image = self.image.filter(ImageFilter.CONTOUR)
+        elif self.effect_vars['effect'].get() == 'Edge enhance':
+            self.image = self.image.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
         self.place_image()
 
@@ -66,7 +123,7 @@ class App(ctk.CTk):
         self.image_import.grid_remove()
         self.image_output = ImageOutput(self, self.resize_image)
         self.close_button = CloseOutput(self, self.close_edit)
-        self.menu = Menu(self, self.rotate_int, self.zoom_int)
+        self.menu = Menu(self, self.pos_vars, self.color_vars, self.effect_vars)
 
     def resize_image(self, event):
         canvas_ratio = event.width / event.height
@@ -98,4 +155,5 @@ class App(ctk.CTk):
         self.image_import.grid()
 
 
-App()
+if __name__ == '__main__':
+    App()
