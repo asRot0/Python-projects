@@ -158,9 +158,14 @@ class App(ctk.CTk):
 
     def export_image(self, name, file, path):
         export_string = f'{path}/{name}.{file}'
-        self.image.save(export_string)
-        CTkMessagebox(title='', message='saved', topmost=True,
-                      icon='check', option_1='Thanks', fade_in_duration=1)
+        try:
+            self.image.save(export_string)
+            CTkMessagebox(title='', message='saved', topmost=True, button_width=10, fade_in_duration=1,
+                          button_color=settings.BUTTON_BG, button_hover_color=settings.BUTTON_BG_HOVER,
+                          icon='check', option_1='Thanks')
+        except ValueError:
+            CTkMessagebox(title="Error", message="Something went wrong!!!", icon="cancel", button_width=10,
+                          button_color=settings.BUTTON_BG, button_hover_color=settings.BUTTON_BG_HOVER)
 
 
 if __name__ == '__main__':
