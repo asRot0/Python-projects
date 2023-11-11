@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from CTkMessagebox import CTkMessagebox
 from image_widgets import ImageImport, ImageOutput, CloseOutput
 from menu import Menu
 from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
@@ -12,6 +13,7 @@ class App(ctk.CTk):
         ctk.set_appearance_mode('dark')
         self.geometry('1000x600')
         self.title('Photo Editor')
+        self.iconbitmap(settings.title_ico)
         self.minsize(800, 500)
 
         self.image = None
@@ -157,6 +159,8 @@ class App(ctk.CTk):
     def export_image(self, name, file, path):
         export_string = f'{path}/{name}.{file}'
         self.image.save(export_string)
+        CTkMessagebox(title='', message='saved', topmost=True,
+                      icon='check', option_1='Thanks', fade_in_duration=1)
 
 
 if __name__ == '__main__':
