@@ -5,11 +5,42 @@ This repository contains a collection of various Python projects I've created, s
 
 ## Table of Contents |||||||||||||||||||||||||||||||||||||||
 
+- [Photo Editor](https://github.com/asif7707/Python-projects/tree/main/Photo%20Editor#overview)
+- [Calculator](https://github.com/asif7707/Python-projects/tree/main/Calculator)
 - [Screen Recorder](https://github.com/asif7707/Python-projects/tree/main/Screen%20Recorder)
 - [Image Viewer](https://github.com/asif7707/Python-projects/tree/main/Image%20Viewer)
 - [Message Encode Decode](https://github.com/asif7707/Python-projects/tree/main/Message%20Encode%20Decode)
-- [Calculator](https://github.com/asif7707/Python-projects/tree/main/Calculator)
 ## |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+## Photo Editor
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Photo%20Editor#overview)**
+    
+    Crafted using Python and Tkinter, this Photo Editor stands out as a robust suite for manipulating
+    images. Its user-friendly interface, complemented by a dark-themed aesthetic, not only elevates the
+    visual experience but also ensures a smooth user journey.
+    
+    At the core of its capabilities lies precision image manipulation. Users can seamlessly rotate, zoom, and flip images, achieving the perfect orientation effortlessly. Beyond basic adjustments, the editor provides nuanced controls for enhancing colors. Fine-tune brightness, experiment with vibrance, and explore grayscale and inversion for diverse creative expressions.
+
+
+
+## Calculator
+**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Calculator)**
+    
+    The Calculator App is a versatile and visually appealing calculator program built with CustomTkinter.
+    It offers a sleek and user-friendly interface for performing basic and complex calculations. Features
+    include standard arithmetic operations (addition, subtraction, multiplication, and division),
+    percentage calculations, and history tracking. The app allows you to clear history, correct input 
+    errors, and offers a dark mode for comfortable usage in various environments. Whether you're a student,
+    professional, or just need a handy digital calculator, this app simplifies mathematical tasks with 
+    precision.
+    
+    - Customizable and visually appealing UI.
+    - Arithmetic operations for solving equations.
+    - Percentage and history tracking.
+    - Ability to clear the history and start fresh.
+    - Error correction with a backspace feature.
+    - Dark mode for low-light usage.
 
 
 ## Screen Recorder
@@ -47,25 +78,6 @@ This repository contains a collection of various Python projects I've created, s
     
     - Message encoding and decoding.
     - Multiple encoding techniques.
-
-
-## Calculator
-**Description: [View Project](https://github.com/asif7707/Python-projects/tree/main/Calculator)**
-    
-    The Calculator App is a versatile and visually appealing calculator program built with CustomTkinter.
-    It offers a sleek and user-friendly interface for performing basic and complex calculations. Features
-    include standard arithmetic operations (addition, subtraction, multiplication, and division),
-    percentage calculations, and history tracking. The app allows you to clear history, correct input 
-    errors, and offers a dark mode for comfortable usage in various environments. Whether you're a student,
-    professional, or just need a handy digital calculator, this app simplifies mathematical tasks with 
-    precision.
-    
-    - Customizable and visually appealing UI.
-    - Arithmetic operations for solving equations.
-    - Percentage and history tracking.
-    - Ability to clear the history and start fresh.
-    - Error correction with a backspace feature.
-    - Dark mode for low-light usage.
 
 
 ## ________________________________________________________________________________
