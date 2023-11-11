@@ -6,7 +6,7 @@ import settings
 
 class Menu(ctk.CTkTabview):
     def __init__(self, parent, pos_vars, color_vars, effect_vars, export_image):
-        super().__init__(master=parent)
+        super().__init__(master=parent, fg_color=settings.MENU_BG)
         self.grid(row=0, column=0, sticky='nsew', padx=5, pady=10)
 
         # tabs
