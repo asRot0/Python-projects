@@ -79,5 +79,7 @@ You can customize the appearance of the photo editor by modifying the `settings.
 
 ![Photo Editor](pic/screenshot1.png)
 
+![Photo Editor](pic/screenshot2.png)
+
 ## Acknowledgments
 - Special thanks to the authors of customtkinter and Pillow for providing these useful libraries.
