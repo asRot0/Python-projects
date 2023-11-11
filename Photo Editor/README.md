@@ -14,6 +14,12 @@ Before you begin, make sure you have the following installed on your system:
   - CTkMessagebox(`CTkMessagebox`)
   - Pillow (`Pillow`)
 
+## Screenshot
+
+![Photo Editor](pic/screenshot1.png)
+
+![Photo Editor](pic/screenshot2.png)
+
 ## Clone the Repository
 ```bash
 git clone https://github.com/asif7707/Python-projects.git
@@ -74,12 +80,6 @@ You can customize the appearance of the photo editor by modifying the `settings.
 ### Built With
 - [customtkinter](https://github.com/TomSchimansky/CustomTkinter) - A custom-themed version of the Tkinter library.
 - [Pillow](https://pillow.readthedocs.io/en/stable/) - The Python Imaging Library for handling images.
-
-## Screenshot
-
-![Photo Editor](pic/screenshot1.png)
-
-![Photo Editor](pic/screenshot2.png)
 
 ## Acknowledgments
 - Special thanks to the authors of customtkinter and Pillow for providing these useful libraries.
