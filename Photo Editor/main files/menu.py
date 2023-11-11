@@ -6,7 +6,9 @@ import settings
 
 class Menu(ctk.CTkTabview):
     def __init__(self, parent, pos_vars, color_vars, effect_vars, export_image):
-        super().__init__(master=parent, fg_color=settings.MENU_BG)
+        super().__init__(master=parent, fg_color=settings.MENU_BG, segmented_button_selected_color=settings.BUTTON_BG,
+                         segmented_button_selected_hover_color=settings.BUTTON_BG_HOVER,
+                         segmented_button_unselected_hover_color=settings.BUTTON_BG_HOVER)
         self.grid(row=0, column=0, sticky='nsew', padx=5, pady=10)
 
         # tabs

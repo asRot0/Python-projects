@@ -9,7 +9,8 @@ class ImageImport(ctk.CTkFrame):
         self.grid(column=0, columnspan=2, row=0, sticky='nsew')
         self.import_func = import_func
 
-        ctk.CTkButton(self, text='open image', command=self.open_dialog).pack(expand=True)
+        ctk.CTkButton(self, text='open image', command=self.open_dialog, fg_color=settings.BUTTON_COLOR,
+                      hover_color=settings.BUTTON_HOVER_COLOR).pack(expand=True)
 
     def open_dialog(self):
         path = filedialog.askopenfilename()
