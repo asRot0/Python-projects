@@ -69,8 +69,9 @@ python photo_editor.py
 ## Dependencies
 The Photo Editor App relies on the following Python packages:
 
-- `customtkinter`: A customized version of the Tkinter library.
-- `Pillow`: An imaging library to handle image-related operations.
+- `customtkinter`: A custom Tkinter library for enhanced UI elements.
+- `Pillow`: A powerful library for handling images in Python.
+- `CTkMessagebox`: A custom messagebox for user notifications.
 
 These dependencies are listed in the `requirements.txt` file and can be installed using the provided instructions.
 
