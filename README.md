@@ -102,7 +102,7 @@ Each project folder contains a README.md file with specific instructions on how 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/asif7707/Python-projects.git
+git clone https://github.com/asRot0/Python-projects.git
 ```
 2. Navigate to the project folder:
 ```bash
