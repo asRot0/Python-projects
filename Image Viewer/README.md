@@ -24,7 +24,7 @@ The Image Viewer is a simple Python application built using Tkinter that allows 
 
 1. Clone the repository:
 
-    git clone https://github.com/asif7707/Python-projects.git
+    git clone https://github.com/asRot0/Python-projects.git
 
 2. Navigate to the Image Viewer directory:
 
