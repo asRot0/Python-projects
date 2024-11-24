@@ -22,7 +22,7 @@ Before you begin, make sure you have the following installed on your system:
 
 ## Clone the Repository
 ```bash
-git clone https://github.com/asif7707/Python-projects.git
+git clone https://github.com/asRot0/Python-projects.git
 cd Python-projects/Photo Editor
 ```
 
